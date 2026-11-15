@@ -548,6 +548,14 @@
     margin-bottom: 16px;
   }
   .section-loading { padding: 40px; text-align: center; color: var(--text-muted); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th, .data-table td { padding: 9px 8px; text-align: right; border-bottom: 1px solid var(--border); }
+  .data-table th:first-child, .data-table td:first-child { text-align: left; color: var(--text-secondary); }
+  .data-table thead th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+  .data-table td { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .data-table tr.sep td { border-top: 2px solid var(--border); }
+  @media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
 
   @media (max-width: 1100px) {
     .main-content { grid-template-columns: 1fr; }
@@ -726,7 +734,13 @@
     <div class="kpi-card"><div class="kpi-label">Índice de Gini (aprox.)</div><div class="kpi-value" id="ineq-gini">—</div><div class="kpi-sub">0 = todos cobran lo mismo · 1 = máxima desigualdad</div></div>
     <div class="kpi-card amber"><div class="kpi-label">Brecha de género</div><div class="kpi-value" id="ineq-brecha">—</div><div class="kpi-sub" id="ineq-brecha-sub">—</div></div>
     <div class="kpi-card blue"><div class="kpi-label">Con complemento a mínimos</div><div class="kpi-value" id="ineq-min">—</div><div class="kpi-sub" id="ineq-min-sub">—</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Pensionista mediano</div><div class="kpi-value" id="ineq-mediana">—</div><div class="kpi-sub">la mitad cobra menos y la otra mitad más</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Pensionista mediano (aprox.)</div><div class="kpi-value" id="ineq-mediana">—</div><div class="kpi-sub" id="ineq-mediana-sub">la mitad cobra menos y la otra mitad más</div></div>
+  </div>
+  <div class="stat-grid">
+    <div class="kpi-card"><div class="kpi-label">El 10 % de arriba frente al de abajo</div><div class="kpi-value" id="ineq-p90p10">—</div><div class="kpi-sub" id="ineq-p90p10-sub">—</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Lo que cobra el 50 % de abajo</div><div class="kpi-value" id="ineq-b50">—</div><div class="kpi-sub">del total que se paga a pensionistas</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Lo que cobra el 10 % de arriba</div><div class="kpi-value" id="ineq-t10">—</div><div class="kpi-sub" id="ineq-t10-sub">—</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Por debajo del salario mínimo</div><div class="kpi-value" id="ineq-smi">—</div><div class="kpi-sub" id="ineq-smi-sub">—</div></div>
   </div>
   <div class="chart-section">
     <div class="chart-header">
@@ -737,6 +751,36 @@
       <div class="chart-canvas-wrap"><canvas id="ineqChart"></canvas></div>
     </div>
     <div class="chart-note" id="ineq-note"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">Curva de Lorenz</div>
+        <div class="chart-subtitle">Qué parte del dinero (eje vertical) cobra cada parte de los pensionistas, de menos a más (eje horizontal)</div>
+      </div>
+      <div class="chart-body"><div class="chart-canvas-wrap"><canvas id="lorenzChart"></canvas></div></div>
+      <div class="chart-note">Cuanto más se aleja la curva de la diagonal, más desigual es el reparto. Si todos cobraran lo mismo, la curva sería la diagonal.</div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">Percentiles por sexo</div>
+        <div class="chart-subtitle">Cuánto cobra al mes el pensionista que deja por debajo al 10 %, 25 %… del total</div>
+      </div>
+      <div class="chart-body"><table class="data-table" id="pct-table"></table></div>
+      <div class="chart-note">P10: el 10 % cobra menos de esa cantidad. P50 es la mediana. S80/S20: cuántas veces más cobra en total el 20 % de arriba que el 20 % de abajo. Valores aproximados, interpolados dentro de cada tramo.</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <div class="panel-header">
+      <div class="panel-title">Pensionistas por debajo del salario mínimo, por provincia</div>
+      <div class="panel-badge">de más a menos · clic para ver la provincia</div>
+    </div>
+    <div class="panel-body" style="padding:0 20px;">
+      <div class="ranking-list" id="smi-list"></div>
+    </div>
+    <div class="chart-note" id="smi-note"></div>
   </div>
 </section>
 
@@ -1248,6 +1292,72 @@ function updateEvolution() {
 // ─── DESIGUALDAD ─────────────────────────────────────────────────────────────
 let INEQ = null;
 
+function renderLorenz(S) {
+  const line = (key, label, color, dash) => ({
+    label, data: S[key].lorenz.map(([x, y]) => ({ x: x * 100, y: y * 100 })),
+    borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, borderDash: dash || [], tension: 0,
+  });
+  new Chart(document.getElementById('lorenzChart'), {
+    type: 'line',
+    data: { datasets: [
+      line('ambos', `Total (Gini ${S.ambos.gini.toFixed(3).replace('.', ',')})`, '#1a1714'),
+      line('mujeres', `Mujeres (${S.mujeres.gini.toFixed(3).replace('.', ',')})`, '#c84b31', [5, 3]),
+      line('hombres', `Hombres (${S.hombres.gini.toFixed(3).replace('.', ',')})`, '#e8a020', [2, 3]),
+      { label: 'Igualdad perfecta', data: [{ x: 0, y: 0 }, { x: 100, y: 100 }], borderColor: '#d6d0c8', borderWidth: 1, pointRadius: 0 },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      interaction: { mode: 'nearest', intersect: false, axis: 'x' },
+      plugins: {
+        legend: { position: 'top', align: 'start', labels: { font: CHART_FONT, color: '#6b6560', boxWidth: 14, boxHeight: 2 } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label.split(' (')[0]}: el ${c.raw.x.toFixed(0)} % de abajo cobra el ${c.raw.y.toFixed(1).replace('.', ',')} %` } },
+      },
+      scales: {
+        x: { type: 'linear', min: 0, max: 100, grid: { color: '#f0ece6' }, ticks: { font: CHART_FONT, color: '#a09a94', callback: v => v + ' %' },
+             title: { display: true, text: '% de pensionistas (de menos a más)', font: CHART_FONT, color: '#a09a94' } },
+        y: { min: 0, max: 100, grid: { color: '#f0ece6' }, ticks: { font: CHART_FONT, color: '#a09a94', callback: v => v + ' %' },
+             title: { display: true, text: '% del importe total', font: CHART_FONT, color: '#a09a94' } },
+      },
+    },
+  });
+}
+
+function renderPercentileTable(d) {
+  const S = d.por_sexo;
+  const sexes = [['ambos', 'Total'], ['mujeres', 'Mujeres'], ['hombres', 'Hombres']];
+  const rows = [['p10', 'P10'], ['p25', 'P25'], ['p50', 'Mediana (P50)'], ['p75', 'P75'], ['p90', 'P90']];
+  const cell = v => v == null ? '—' : eur0(v);
+  const num = (v, dec) => v == null ? '—' : v.toFixed(dec).replace('.', ',');
+  document.getElementById('pct-table').innerHTML =
+    `<thead><tr><th></th>${sexes.map(([, l]) => `<th>${l}</th>`).join('')}</tr></thead><tbody>` +
+    rows.map(([k, l]) => `<tr><td>${l}</td>${sexes.map(([s]) => `<td>${cell(S[s].percentiles[k])}</td>`).join('')}</tr>`).join('') +
+    `<tr class="sep"><td>Media</td>${sexes.map(([s]) => `<td>${eur0(d.importe_medio[s])}</td>`).join('')}</tr>` +
+    `<tr><td>Gini</td>${sexes.map(([s]) => `<td>${num(S[s].gini, 3)}</td>`).join('')}</tr>` +
+    `<tr><td>P90/P10</td>${sexes.map(([s]) => `<td>${num(S[s].p90_p10, 1)}</td>`).join('')}</tr>` +
+    `<tr><td>S80/S20</td>${sexes.map(([s]) => `<td>${num(S[s].s80_s20, 1)}</td>`).join('')}</tr></tbody>`;
+}
+
+function renderSmi(d) {
+  const nat = d.smi.nacional;
+  document.getElementById('ineq-smi').textContent = pct1(nat.bajo_smi_pct);
+  const sorted = Object.values(d.smi.provincias).sort((a, b) => b.bajo_smi_pct - a.bajo_smi_pct);
+  const hi = sorted[0], lo = sorted[sorted.length - 1];
+  document.getElementById('ineq-smi-sub').textContent =
+    `De ${pct1(lo.bajo_smi_pct)} en ${lo.nombre} a ${pct1(hi.bajo_smi_pct)} en ${hi.nombre}`;
+  const max = hi.bajo_smi_pct;
+  document.getElementById('smi-list').innerHTML = sorted.map((p, i) => `
+    <div class="rank-item" onclick="selectProvince('${p.nombre.replace(/'/g, "\\'")}'); document.getElementById('map').scrollIntoView({behavior:'smooth'})">
+      <div class="rank-num-badge">${i + 1}</div>
+      <div class="rank-name">${p.nombre}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${(p.bajo_smi_pct / max * 100).toFixed(0)}%"></div></div>
+      <div class="rank-value">${pct1(p.bajo_smi_pct)}</div>
+    </div>`).join('');
+  document.getElementById('smi-note').innerHTML =
+    `Porcentaje de pensionistas cuya suma de pensiones es inferior al salario mínimo interprofesional vigente, ` +
+    `según la hoja «Tramos» del fichero ${d.fuente.fichero} del INSS. Media nacional: ${pct1(nat.bajo_smi_pct)}. ` +
+    `Ojo: muchos de estos pensionistas tienen otros ingresos, o una pensión de viudedad u orfandad que no sustituye a un salario.`;
+}
+
 async function loadInequality() {
   try {
     const res = await fetch('data/desigualdad.json', { cache: 'no-cache' });
@@ -1266,8 +1376,25 @@ async function loadInequality() {
   document.getElementById('ineq-min').textContent = pct1(d.minimos_pct.ambos);
   document.getElementById('ineq-min-sub').textContent =
     `Mujeres ${pct1(d.minimos_pct.mujeres)} · hombres ${pct1(d.minimos_pct.hombres)}`;
-  const m = d.mediana_tramo;
-  document.getElementById('ineq-mediana').textContent = `${grp(m.desde)}–${grp(m.hasta)} €`;
+  const S = d.por_sexo;
+  if (S) {
+    const A = S.ambos;
+    document.getElementById('ineq-mediana').textContent = eur0(A.percentiles.p50);
+    document.getElementById('ineq-mediana-sub').textContent =
+      `Mujeres ${eur0(S.mujeres.percentiles.p50)} · hombres ${eur0(S.hombres.percentiles.p50)}`;
+    document.getElementById('ineq-p90p10').textContent = A.p90_p10.toFixed(1).replace('.', ',') + ' veces';
+    document.getElementById('ineq-p90p10-sub').textContent =
+      `El 10 % de abajo cobra menos de ${eur0(A.percentiles.p10)}; el 10 % de arriba, más de ${eur0(A.percentiles.p90)}`;
+    document.getElementById('ineq-b50').textContent = pct1(A.cuota_50_inferior);
+    document.getElementById('ineq-t10').textContent = pct1(A.cuota_10_superior);
+    document.getElementById('ineq-t10-sub').textContent = `${A.s80_s20.toFixed(1).replace('.', ',')} veces: S80/S20 (20 % de arriba frente al 20 % de abajo)`;
+    renderLorenz(S);
+    renderPercentileTable(d);
+  } else {
+    const m = d.mediana_tramo;
+    document.getElementById('ineq-mediana').textContent = `${grp(m.desde)}–${grp(m.hasta)} €`;
+  }
+  if (d.smi) renderSmi(d);
   document.getElementById('ineq-subtitle').textContent =
     `${fmtNum(d.pensionistas.ambos)} pensionistas · datos a ${fechaLarga(d.fecha_datos)}`;
   document.getElementById('ineq-note').innerHTML =
