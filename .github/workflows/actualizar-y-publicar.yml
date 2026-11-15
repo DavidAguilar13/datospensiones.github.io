@@ -1,0 +1,130 @@
+# Actualiza los datos cada día y publica la web.
+#
+# - Todos los días (y a mano desde la pestaña Actions) ejecuta scripts/update_data.py.
+#   Si hay datos nuevos y pasan la validación, hace commit en main y publica.
+# - Si la validación falla o no se pueden descargar los datos, NO publica nada y abre
+#   (o comenta) un issue con la etiqueta «aviso-datos».
+# - Cada push a main (p. ej. al fusionar un PR) también publica la web.
+#
+# Requiere: Settings → Pages → Source = «GitHub Actions».
+
+name: Actualizar datos y publicar
+
+on:
+  schedule:
+    - cron: "17 7 * * *"   # todos los días a las 7:17 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: actualizar-y-publicar
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      cambios: ${{ steps.commit.outputs.cambios }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Instalar dependencias
+        run: pip install -r scripts/requirements.txt
+
+      - name: Descargar, validar y actualizar
+        id: update
+        run: |
+          set +e
+          python scripts/update_data.py 2>&1 | tee update.log
+          code=${PIPESTATUS[0]}
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit de los datos nuevos
+        id: commit
+        if: steps.update.outputs.code == '0'
+        run: |
+          if git diff --quiet -- data/; then
+            echo "Sin cambios en data/."
+            echo "cambios=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          periodo=$(python -c "import json; print(json.load(open('data/pensiones.json'))['periodo'])")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Datos actualizados (pensiones: ${periodo})" -m "Actualización automática validada por scripts/update_data.py."
+          git push
+          echo "cambios=true" >> "$GITHUB_OUTPUT"
+
+      - name: Avisar con un issue si ha fallado
+        if: steps.update.outputs.code != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODE: ${{ steps.update.outputs.code }}
+        run: |
+          gh label create aviso-datos --color d93f0b --description "Fallo en la actualización automática de datos" --force
+          if [ "$CODE" = "1" ]; then motivo="la validación ha fallado"; else motivo="no se han podido descargar o leer los datos"; fi
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          {
+            echo "La actualización automática del $(date -u +%F) no ha publicado nada: **${motivo}** (código ${CODE})."
+            echo
+            echo "La web sigue mostrando los últimos datos válidos."
+            echo
+            echo "Ejecución: ${run_url}"
+            echo
+            echo '```'
+            tail -n 60 update.log
+            echo '```'
+          } > body.md
+          existing=$(gh issue list --label aviso-datos --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create --title "Fallo en la actualización de datos" --label aviso-datos --body-file body.md
+          fi
+          exit 1
+
+  publicar:
+    needs: actualizar
+    # publica en cada push a main, o si la actualización ha traído datos nuevos
+    if: >-
+      always() &&
+      (github.event_name == 'push' ||
+       (needs.actualizar.result == 'success' && needs.actualizar.outputs.cambios == 'true'))
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main   # incluye el commit de datos recién hecho
+
+      - name: Preparar la web
+        run: |
+          mkdir _site
+          cp index.html sobre.html _site/
+          cp -r data _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -82,6 +82,23 @@ Notas de método:
 - **Por debajo del SMI**: hoja «Tramos» del PTAS (pensionistas cuya suma de pensiones es
   inferior al salario mínimo vigente), por provincia.
 
+## Actualización automática (GitHub Actions)
+
+`.github/workflows/actualizar-y-publicar.yml`:
+
+- **Cada día a las 7:17 UTC** (y a mano desde la pestaña *Actions → Run workflow*) ejecuta
+  `scripts/update_data.py`.
+  - Si hay datos nuevos y pasan la validación: commit en `main` («Datos actualizados …») y
+    publica la web.
+  - Si no hay novedades: no hace nada.
+  - Si la validación falla o no se pueden descargar los datos: **no publica nada** y abre un
+    issue con la etiqueta `aviso-datos` (o comenta en el que ya esté abierto) con el registro
+    del error. La web sigue mostrando los últimos datos válidos.
+- **Cada push a `main`** (por ejemplo, al fusionar un PR) publica la web.
+
+La web se publica con GitHub Pages en modo *GitHub Actions* (Settings → Pages → Source).
+Solo se publican `index.html`, `sobre.html` y `data/`.
+
 ## Probar en local
 
 `fetch` no funciona abriendo el fichero con doble clic. Hay que servir la carpeta:
