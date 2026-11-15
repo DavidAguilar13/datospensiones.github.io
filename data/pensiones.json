@@ -1,0 +1,1442 @@
+{
+  "periodo": "2026-02",
+  "fecha_datos": "2026-02-01",
+  "fuente": {
+    "nombre": "Instituto Nacional de la Seguridad Social (INSS)",
+    "url": "https://www.seg-social.es",
+    "fichero": "CA202602.xlsx",
+    "hoja": "CA_Total sistema"
+  },
+  "nacional": {
+    "total": {
+      "num": 10446888,
+      "media": 1366.2
+    },
+    "jub": {
+      "num": 6670447,
+      "media": 1566.81
+    },
+    "ip": {
+      "num": 1055274,
+      "media": 1253.57
+    },
+    "viu": {
+      "num": 2339414,
+      "media": 972.79
+    },
+    "orf": {
+      "num": 335157,
+      "media": 550.14
+    },
+    "fam": {
+      "num": 46596,
+      "media": 819.46
+    }
+  },
+  "provincias": {
+    "01": {
+      "nombre": "Álava",
+      "total": {
+        "num": 85049,
+        "media": 1702.61
+      },
+      "jub": {
+        "num": 58671,
+        "media": 1917.57
+      },
+      "ip": {
+        "num": 6858,
+        "media": 1580.69
+      },
+      "viu": {
+        "num": 17287,
+        "media": 1159.62
+      },
+      "orf": {
+        "num": 2074,
+        "media": 610.05
+      },
+      "fam": {
+        "num": 159,
+        "media": 925.83
+      }
+    },
+    "02": {
+      "nombre": "Albacete",
+      "total": {
+        "num": 77089,
+        "media": 1252.43
+      },
+      "jub": {
+        "num": 48141,
+        "media": 1433.12
+      },
+      "ip": {
+        "num": 6978,
+        "media": 1183.37
+      },
+      "viu": {
+        "num": 18363,
+        "media": 934.93
+      },
+      "orf": {
+        "num": 2844,
+        "media": 557.86
+      },
+      "fam": {
+        "num": 763,
+        "media": 712.8
+      }
+    },
+    "03": {
+      "nombre": "Alicante",
+      "total": {
+        "num": 352958,
+        "media": 1188.0
+      },
+      "jub": {
+        "num": 231156,
+        "media": 1342.28
+      },
+      "ip": {
+        "num": 25899,
+        "media": 1149.86
+      },
+      "viu": {
+        "num": 82471,
+        "media": 877.27
+      },
+      "orf": {
+        "num": 12191,
+        "media": 487.57
+      },
+      "fam": {
+        "num": 1241,
+        "media": 776.66
+      }
+    },
+    "04": {
+      "nombre": "Almería",
+      "total": {
+        "num": 121243,
+        "media": 1128.46
+      },
+      "jub": {
+        "num": 74325,
+        "media": 1291.9
+      },
+      "ip": {
+        "num": 11823,
+        "media": 1162.45
+      },
+      "viu": {
+        "num": 29076,
+        "media": 829.27
+      },
+      "orf": {
+        "num": 5488,
+        "media": 461.93
+      },
+      "fam": {
+        "num": 531,
+        "media": 765.35
+      }
+    },
+    "05": {
+      "nombre": "Ávila",
+      "total": {
+        "num": 40282,
+        "media": 1213.22
+      },
+      "jub": {
+        "num": 25760,
+        "media": 1372.7
+      },
+      "ip": {
+        "num": 3567,
+        "media": 1128.04
+      },
+      "viu": {
+        "num": 9468,
+        "media": 905.09
+      },
+      "orf": {
+        "num": 1253,
+        "media": 591.64
+      },
+      "fam": {
+        "num": 234,
+        "media": 750.8
+      }
+    },
+    "06": {
+      "nombre": "Badajoz",
+      "total": {
+        "num": 145669,
+        "media": 1173.05
+      },
+      "jub": {
+        "num": 82384,
+        "media": 1358.41
+      },
+      "ip": {
+        "num": 20664,
+        "media": 1077.12
+      },
+      "viu": {
+        "num": 35114,
+        "media": 920.98
+      },
+      "orf": {
+        "num": 5954,
+        "media": 545.72
+      },
+      "fam": {
+        "num": 1553,
+        "media": 720.49
+      }
+    },
+    "07": {
+      "nombre": "Illes Balears",
+      "total": {
+        "num": 215113,
+        "media": 1274.75
+      },
+      "jub": {
+        "num": 144750,
+        "media": 1445.08
+      },
+      "ip": {
+        "num": 18732,
+        "media": 1186.35
+      },
+      "viu": {
+        "num": 45470,
+        "media": 877.65
+      },
+      "orf": {
+        "num": 6045,
+        "media": 466.23
+      },
+      "fam": {
+        "num": 116,
+        "media": 795.72
+      }
+    },
+    "08": {
+      "nombre": "Barcelona",
+      "total": {
+        "num": 1354048,
+        "media": 1459.3
+      },
+      "jub": {
+        "num": 904619,
+        "media": 1643.34
+      },
+      "ip": {
+        "num": 123824,
+        "media": 1415.27
+      },
+      "viu": {
+        "num": 287990,
+        "media": 1016.49
+      },
+      "orf": {
+        "num": 36523,
+        "media": 558.19
+      },
+      "fam": {
+        "num": 1092,
+        "media": 913.29
+      }
+    },
+    "09": {
+      "nombre": "Burgos",
+      "total": {
+        "num": 95428,
+        "media": 1466.53
+      },
+      "jub": {
+        "num": 66371,
+        "media": 1655.39
+      },
+      "ip": {
+        "num": 5517,
+        "media": 1376.95
+      },
+      "viu": {
+        "num": 20453,
+        "media": 1006.12
+      },
+      "orf": {
+        "num": 2771,
+        "media": 585.61
+      },
+      "fam": {
+        "num": 316,
+        "media": 885.7
+      }
+    },
+    "10": {
+      "nombre": "Cáceres",
+      "total": {
+        "num": 101294,
+        "media": 1155.24
+      },
+      "jub": {
+        "num": 62937,
+        "media": 1309.98
+      },
+      "ip": {
+        "num": 11003,
+        "media": 1092.38
+      },
+      "viu": {
+        "num": 23558,
+        "media": 862.74
+      },
+      "orf": {
+        "num": 3171,
+        "media": 557.15
+      },
+      "fam": {
+        "num": 625,
+        "media": 739.14
+      }
+    },
+    "11": {
+      "nombre": "Cádiz",
+      "total": {
+        "num": 237683,
+        "media": 1357.04
+      },
+      "jub": {
+        "num": 130580,
+        "media": 1611.15
+      },
+      "ip": {
+        "num": 36775,
+        "media": 1248.26
+      },
+      "viu": {
+        "num": 57127,
+        "media": 1017.57
+      },
+      "orf": {
+        "num": 10289,
+        "media": 562.55
+      },
+      "fam": {
+        "num": 2912,
+        "media": 803.07
+      }
+    },
+    "12": {
+      "nombre": "Castellón",
+      "total": {
+        "num": 142843,
+        "media": 1237.44
+      },
+      "jub": {
+        "num": 91868,
+        "media": 1394.97
+      },
+      "ip": {
+        "num": 15693,
+        "media": 1209.53
+      },
+      "viu": {
+        "num": 30537,
+        "media": 889.53
+      },
+      "orf": {
+        "num": 4514,
+        "media": 505.24
+      },
+      "fam": {
+        "num": 231,
+        "media": 780.91
+      }
+    },
+    "13": {
+      "nombre": "Ciudad Real",
+      "total": {
+        "num": 106314,
+        "media": 1286.61
+      },
+      "jub": {
+        "num": 58223,
+        "media": 1512.19
+      },
+      "ip": {
+        "num": 17061,
+        "media": 1141.22
+      },
+      "viu": {
+        "num": 26185,
+        "media": 1003.61
+      },
+      "orf": {
+        "num": 3945,
+        "media": 577.63
+      },
+      "fam": {
+        "num": 900,
+        "media": 790.3
+      }
+    },
+    "14": {
+      "nombre": "Córdoba",
+      "total": {
+        "num": 184658,
+        "media": 1155.61
+      },
+      "jub": {
+        "num": 116184,
+        "media": 1320.06
+      },
+      "ip": {
+        "num": 17811,
+        "media": 1105.66
+      },
+      "viu": {
+        "num": 42502,
+        "media": 839.41
+      },
+      "orf": {
+        "num": 6735,
+        "media": 530.62
+      },
+      "fam": {
+        "num": 1426,
+        "media": 756.95
+      }
+    },
+    "15": {
+      "nombre": "A Coruña",
+      "total": {
+        "num": 311504,
+        "media": 1231.84
+      },
+      "jub": {
+        "num": 194326,
+        "media": 1417.32
+      },
+      "ip": {
+        "num": 32329,
+        "media": 1139.87
+      },
+      "viu": {
+        "num": 73321,
+        "media": 878.75
+      },
+      "orf": {
+        "num": 9072,
+        "media": 568.84
+      },
+      "fam": {
+        "num": 2456,
+        "media": 756.63
+      }
+    },
+    "16": {
+      "nombre": "Cuenca",
+      "total": {
+        "num": 46141,
+        "media": 1191.5
+      },
+      "jub": {
+        "num": 26812,
+        "media": 1362.18
+      },
+      "ip": {
+        "num": 6732,
+        "media": 1102.7
+      },
+      "viu": {
+        "num": 10705,
+        "media": 926.36
+      },
+      "orf": {
+        "num": 1583,
+        "media": 564.51
+      },
+      "fam": {
+        "num": 309,
+        "media": 714.43
+      }
+    },
+    "17": {
+      "nombre": "Girona",
+      "total": {
+        "num": 172343,
+        "media": 1286.92
+      },
+      "jub": {
+        "num": 117203,
+        "media": 1452.92
+      },
+      "ip": {
+        "num": 14329,
+        "media": 1243.56
+      },
+      "viu": {
+        "num": 36014,
+        "media": 873.52
+      },
+      "orf": {
+        "num": 4740,
+        "media": 459.26
+      },
+      "fam": {
+        "num": 57,
+        "media": 875.78
+      }
+    },
+    "18": {
+      "nombre": "Granada",
+      "total": {
+        "num": 204962,
+        "media": 1177.07
+      },
+      "jub": {
+        "num": 125915,
+        "media": 1350.34
+      },
+      "ip": {
+        "num": 25097,
+        "media": 1172.22
+      },
+      "viu": {
+        "num": 44833,
+        "media": 820.82
+      },
+      "orf": {
+        "num": 7671,
+        "media": 504.16
+      },
+      "fam": {
+        "num": 1446,
+        "media": 788.59
+      }
+    },
+    "19": {
+      "nombre": "Guadalajara",
+      "total": {
+        "num": 47589,
+        "media": 1447.47
+      },
+      "jub": {
+        "num": 30167,
+        "media": 1662.89
+      },
+      "ip": {
+        "num": 6250,
+        "media": 1270.32
+      },
+      "viu": {
+        "num": 9499,
+        "media": 1036.69
+      },
+      "orf": {
+        "num": 1568,
+        "media": 538.87
+      },
+      "fam": {
+        "num": 105,
+        "media": 829.74
+      }
+    },
+    "20": {
+      "nombre": "Gipuzkoa",
+      "total": {
+        "num": 197670,
+        "media": 1645.93
+      },
+      "jub": {
+        "num": 136284,
+        "media": 1846.54
+      },
+      "ip": {
+        "num": 13078,
+        "media": 1628.6
+      },
+      "viu": {
+        "num": 42954,
+        "media": 1136.15
+      },
+      "orf": {
+        "num": 4832,
+        "media": 633.16
+      },
+      "fam": {
+        "num": 522,
+        "media": 1030.28
+      }
+    },
+    "21": {
+      "nombre": "Huelva",
+      "total": {
+        "num": 107219,
+        "media": 1241.75
+      },
+      "jub": {
+        "num": 62868,
+        "media": 1452.45
+      },
+      "ip": {
+        "num": 14027,
+        "media": 1111.95
+      },
+      "viu": {
+        "num": 25149,
+        "media": 926.09
+      },
+      "orf": {
+        "num": 4341,
+        "media": 524.95
+      },
+      "fam": {
+        "num": 834,
+        "media": 792.1
+      }
+    },
+    "22": {
+      "nombre": "Huesca",
+      "total": {
+        "num": 55410,
+        "media": 1319.55
+      },
+      "jub": {
+        "num": 36047,
+        "media": 1501.95
+      },
+      "ip": {
+        "num": 4993,
+        "media": 1202.09
+      },
+      "viu": {
+        "num": 12673,
+        "media": 950.13
+      },
+      "orf": {
+        "num": 1618,
+        "media": 538.35
+      },
+      "fam": {
+        "num": 79,
+        "media": 774.9
+      }
+    },
+    "23": {
+      "nombre": "Jaén",
+      "total": {
+        "num": 152299,
+        "media": 1143.64
+      },
+      "jub": {
+        "num": 87503,
+        "media": 1309.66
+      },
+      "ip": {
+        "num": 23227,
+        "media": 1098.13
+      },
+      "viu": {
+        "num": 35499,
+        "media": 866.06
+      },
+      "orf": {
+        "num": 5226,
+        "media": 520.15
+      },
+      "fam": {
+        "num": 844,
+        "media": 719.79
+      }
+    },
+    "24": {
+      "nombre": "León",
+      "total": {
+        "num": 140863,
+        "media": 1363.83
+      },
+      "jub": {
+        "num": 88052,
+        "media": 1567.84
+      },
+      "ip": {
+        "num": 14405,
+        "media": 1312.02
+      },
+      "viu": {
+        "num": 33286,
+        "media": 952.55
+      },
+      "orf": {
+        "num": 4009,
+        "media": 606.24
+      },
+      "fam": {
+        "num": 1111,
+        "media": 922.39
+      }
+    },
+    "25": {
+      "nombre": "Lleida",
+      "total": {
+        "num": 104812,
+        "media": 1237.84
+      },
+      "jub": {
+        "num": 66266,
+        "media": 1412.57
+      },
+      "ip": {
+        "num": 11792,
+        "media": 1218.89
+      },
+      "viu": {
+        "num": 23535,
+        "media": 856.33
+      },
+      "orf": {
+        "num": 3157,
+        "media": 491.58
+      },
+      "fam": {
+        "num": 62,
+        "media": 900.62
+      }
+    },
+    "26": {
+      "nombre": "La Rioja",
+      "total": {
+        "num": 75852,
+        "media": 1355.8
+      },
+      "jub": {
+        "num": 52467,
+        "media": 1514.91
+      },
+      "ip": {
+        "num": 5269,
+        "media": 1291.7
+      },
+      "viu": {
+        "num": 15980,
+        "media": 961.74
+      },
+      "orf": {
+        "num": 1963,
+        "media": 531.68
+      },
+      "fam": {
+        "num": 173,
+        "media": 807.2
+      }
+    },
+    "27": {
+      "nombre": "Lugo",
+      "total": {
+        "num": 112634,
+        "media": 1079.26
+      },
+      "jub": {
+        "num": 70013,
+        "media": 1229.49
+      },
+      "ip": {
+        "num": 12560,
+        "media": 1127.47
+      },
+      "viu": {
+        "num": 26067,
+        "media": 729.17
+      },
+      "orf": {
+        "num": 2940,
+        "media": 541.41
+      },
+      "fam": {
+        "num": 1054,
+        "media": 683.36
+      }
+    },
+    "28": {
+      "nombre": "Madrid",
+      "total": {
+        "num": 1291865,
+        "media": 1576.74
+      },
+      "jub": {
+        "num": 881869,
+        "media": 1790.49
+      },
+      "ip": {
+        "num": 98608,
+        "media": 1355.13
+      },
+      "viu": {
+        "num": 273598,
+        "media": 1101.22
+      },
+      "orf": {
+        "num": 35079,
+        "media": 584.68
+      },
+      "fam": {
+        "num": 2711,
+        "media": 932.33
+      }
+    },
+    "29": {
+      "nombre": "Málaga",
+      "total": {
+        "num": 298361,
+        "media": 1246.62
+      },
+      "jub": {
+        "num": 183155,
+        "media": 1433.28
+      },
+      "ip": {
+        "num": 33088,
+        "media": 1228.78
+      },
+      "viu": {
+        "num": 67747,
+        "media": 901.49
+      },
+      "orf": {
+        "num": 12636,
+        "media": 504.06
+      },
+      "fam": {
+        "num": 1735,
+        "media": 767.01
+      }
+    },
+    "30": {
+      "nombre": "Murcia",
+      "total": {
+        "num": 270553,
+        "media": 1222.11
+      },
+      "jub": {
+        "num": 162170,
+        "media": 1417.9
+      },
+      "ip": {
+        "num": 32772,
+        "media": 1142.19
+      },
+      "viu": {
+        "num": 62140,
+        "media": 902.37
+      },
+      "orf": {
+        "num": 11809,
+        "media": 503.65
+      },
+      "fam": {
+        "num": 1662,
+        "media": 754.14
+      }
+    },
+    "31": {
+      "nombre": "Navarra",
+      "total": {
+        "num": 149020,
+        "media": 1558.51
+      },
+      "jub": {
+        "num": 103808,
+        "media": 1749.23
+      },
+      "ip": {
+        "num": 10595,
+        "media": 1485.03
+      },
+      "viu": {
+        "num": 30027,
+        "media": 1071.32
+      },
+      "orf": {
+        "num": 4227,
+        "media": 577.73
+      },
+      "fam": {
+        "num": 363,
+        "media": 884.54
+      }
+    },
+    "32": {
+      "nombre": "Ourense",
+      "total": {
+        "num": 109247,
+        "media": 1019.24
+      },
+      "jub": {
+        "num": 67151,
+        "media": 1131.24
+      },
+      "ip": {
+        "num": 13602,
+        "media": 1146.31
+      },
+      "viu": {
+        "num": 24462,
+        "media": 715.77
+      },
+      "orf": {
+        "num": 2847,
+        "media": 516.79
+      },
+      "fam": {
+        "num": 1185,
+        "media": 685.95
+      }
+    },
+    "33": {
+      "nombre": "Asturias",
+      "total": {
+        "num": 302888,
+        "media": 1575.22
+      },
+      "jub": {
+        "num": 187932,
+        "media": 1835.0
+      },
+      "ip": {
+        "num": 28589,
+        "media": 1409.4
+      },
+      "viu": {
+        "num": 75684,
+        "media": 1109.98
+      },
+      "orf": {
+        "num": 8632,
+        "media": 665.25
+      },
+      "fam": {
+        "num": 2051,
+        "media": 1081.83
+      }
+    },
+    "34": {
+      "nombre": "Palencia",
+      "total": {
+        "num": 44576,
+        "media": 1399.29
+      },
+      "jub": {
+        "num": 28775,
+        "media": 1603.89
+      },
+      "ip": {
+        "num": 4153,
+        "media": 1212.24
+      },
+      "viu": {
+        "num": 10033,
+        "media": 1007.85
+      },
+      "orf": {
+        "num": 1333,
+        "media": 627.8
+      },
+      "fam": {
+        "num": 282,
+        "media": 849.87
+      }
+    },
+    "35": {
+      "nombre": "Las Palmas",
+      "total": {
+        "num": 199745,
+        "media": 1266.26
+      },
+      "jub": {
+        "num": 111327,
+        "media": 1470.07
+      },
+      "ip": {
+        "num": 34273,
+        "media": 1254.74
+      },
+      "viu": {
+        "num": 43241,
+        "media": 926.0
+      },
+      "orf": {
+        "num": 9111,
+        "media": 528.32
+      },
+      "fam": {
+        "num": 1793,
+        "media": 787.04
+      }
+    },
+    "36": {
+      "nombre": "Pontevedra",
+      "total": {
+        "num": 254056,
+        "media": 1220.36
+      },
+      "jub": {
+        "num": 158531,
+        "media": 1406.26
+      },
+      "ip": {
+        "num": 26859,
+        "media": 1136.35
+      },
+      "viu": {
+        "num": 58189,
+        "media": 865.96
+      },
+      "orf": {
+        "num": 8185,
+        "media": 543.55
+      },
+      "fam": {
+        "num": 2292,
+        "media": 760.93
+      }
+    },
+    "37": {
+      "nombre": "Salamanca",
+      "total": {
+        "num": 83624,
+        "media": 1285.36
+      },
+      "jub": {
+        "num": 54774,
+        "media": 1458.82
+      },
+      "ip": {
+        "num": 6004,
+        "media": 1182.59
+      },
+      "viu": {
+        "num": 19746,
+        "media": 935.67
+      },
+      "orf": {
+        "num": 2444,
+        "media": 609.86
+      },
+      "fam": {
+        "num": 656,
+        "media": 785.09
+      }
+    },
+    "38": {
+      "nombre": "Santa Cruz de Tenerife",
+      "total": {
+        "num": 178436,
+        "media": 1225.34
+      },
+      "jub": {
+        "num": 103204,
+        "media": 1427.19
+      },
+      "ip": {
+        "num": 26816,
+        "media": 1126.85
+      },
+      "viu": {
+        "num": 40423,
+        "media": 909.07
+      },
+      "orf": {
+        "num": 7139,
+        "media": 516.38
+      },
+      "fam": {
+        "num": 854,
+        "media": 821.16
+      }
+    },
+    "39": {
+      "nombre": "Cantabria",
+      "total": {
+        "num": 149434,
+        "media": 1435.5
+      },
+      "jub": {
+        "num": 94596,
+        "media": 1653.99
+      },
+      "ip": {
+        "num": 14156,
+        "media": 1304.92
+      },
+      "viu": {
+        "num": 34737,
+        "media": 1024.54
+      },
+      "orf": {
+        "num": 4562,
+        "media": 601.61
+      },
+      "fam": {
+        "num": 1383,
+        "media": 900.61
+      }
+    },
+    "40": {
+      "nombre": "Segovia",
+      "total": {
+        "num": 36132,
+        "media": 1308.91
+      },
+      "jub": {
+        "num": 23936,
+        "media": 1492.66
+      },
+      "ip": {
+        "num": 2769,
+        "media": 1139.23
+      },
+      "viu": {
+        "num": 8222,
+        "media": 936.93
+      },
+      "orf": {
+        "num": 1067,
+        "media": 562.85
+      },
+      "fam": {
+        "num": 138,
+        "media": 772.86
+      }
+    },
+    "41": {
+      "nombre": "Sevilla",
+      "total": {
+        "num": 411644,
+        "media": 1267.39
+      },
+      "jub": {
+        "num": 236334,
+        "media": 1482.18
+      },
+      "ip": {
+        "num": 64550,
+        "media": 1145.19
+      },
+      "viu": {
+        "num": 92061,
+        "media": 940.82
+      },
+      "orf": {
+        "num": 15792,
+        "media": 544.22
+      },
+      "fam": {
+        "num": 2907,
+        "media": 790.13
+      }
+    },
+    "42": {
+      "nombre": "Soria",
+      "total": {
+        "num": 23135,
+        "media": 1328.39
+      },
+      "jub": {
+        "num": 16025,
+        "media": 1500.85
+      },
+      "ip": {
+        "num": 1324,
+        "media": 1239.92
+      },
+      "viu": {
+        "num": 5035,
+        "media": 910.7
+      },
+      "orf": {
+        "num": 678,
+        "media": 585.92
+      },
+      "fam": {
+        "num": 73,
+        "media": 778.12
+      }
+    },
+    "43": {
+      "nombre": "Tarragona",
+      "total": {
+        "num": 185538,
+        "media": 1340.23
+      },
+      "jub": {
+        "num": 120556,
+        "media": 1523.66
+      },
+      "ip": {
+        "num": 19000,
+        "media": 1272.16
+      },
+      "viu": {
+        "num": 40342,
+        "media": 939.82
+      },
+      "orf": {
+        "num": 5443,
+        "media": 504.04
+      },
+      "fam": {
+        "num": 197,
+        "media": 758.83
+      }
+    },
+    "44": {
+      "nombre": "Teruel",
+      "total": {
+        "num": 36444,
+        "media": 1331.18
+      },
+      "jub": {
+        "num": 23757,
+        "media": 1520.77
+      },
+      "ip": {
+        "num": 3673,
+        "media": 1185.94
+      },
+      "viu": {
+        "num": 7912,
+        "media": 935.32
+      },
+      "orf": {
+        "num": 1004,
+        "media": 540.42
+      },
+      "fam": {
+        "num": 98,
+        "media": 874.79
+      }
+    },
+    "45": {
+      "nombre": "Toledo",
+      "total": {
+        "num": 129328,
+        "media": 1272.18
+      },
+      "jub": {
+        "num": 81977,
+        "media": 1450.54
+      },
+      "ip": {
+        "num": 12199,
+        "media": 1152.16
+      },
+      "viu": {
+        "num": 30010,
+        "media": 958.57
+      },
+      "orf": {
+        "num": 4567,
+        "media": 519.39
+      },
+      "fam": {
+        "num": 575,
+        "media": 736.54
+      }
+    },
+    "46": {
+      "nombre": "Valencia",
+      "total": {
+        "num": 578558,
+        "media": 1319.26
+      },
+      "jub": {
+        "num": 363446,
+        "media": 1518.47
+      },
+      "ip": {
+        "num": 62273,
+        "media": 1215.96
+      },
+      "viu": {
+        "num": 131631,
+        "media": 941.48
+      },
+      "orf": {
+        "num": 20115,
+        "media": 538.4
+      },
+      "fam": {
+        "num": 1093,
+        "media": 831.45
+      }
+    },
+    "47": {
+      "nombre": "Valladolid",
+      "total": {
+        "num": 125492,
+        "media": 1488.65
+      },
+      "jub": {
+        "num": 81404,
+        "media": 1712.24
+      },
+      "ip": {
+        "num": 11350,
+        "media": 1219.2
+      },
+      "viu": {
+        "num": 28486,
+        "media": 1083.28
+      },
+      "orf": {
+        "num": 3572,
+        "media": 600.87
+      },
+      "fam": {
+        "num": 680,
+        "media": 864.69
+      }
+    },
+    "48": {
+      "nombre": "Bizkaia",
+      "total": {
+        "num": 305761,
+        "media": 1689.25
+      },
+      "jub": {
+        "num": 200213,
+        "media": 1933.39
+      },
+      "ip": {
+        "num": 23178,
+        "media": 1567.02
+      },
+      "viu": {
+        "num": 71971,
+        "media": 1186.89
+      },
+      "orf": {
+        "num": 8797,
+        "media": 682.63
+      },
+      "fam": {
+        "num": 1602,
+        "media": 1042.94
+      }
+    },
+    "49": {
+      "nombre": "Zamora",
+      "total": {
+        "num": 47733,
+        "media": 1186.84
+      },
+      "jub": {
+        "num": 31374,
+        "media": 1339.8
+      },
+      "ip": {
+        "num": 2257,
+        "media": 1150.34
+      },
+      "viu": {
+        "num": 12179,
+        "media": 890.68
+      },
+      "orf": {
+        "num": 1507,
+        "media": 582.79
+      },
+      "fam": {
+        "num": 416,
+        "media": 708.27
+      }
+    },
+    "50": {
+      "nombre": "Zaragoza",
+      "total": {
+        "num": 227630,
+        "media": 1490.72
+      },
+      "jub": {
+        "num": 154579,
+        "media": 1688.52
+      },
+      "ip": {
+        "num": 14341,
+        "media": 1373.77
+      },
+      "viu": {
+        "num": 51500,
+        "media": 1053.97
+      },
+      "orf": {
+        "num": 6581,
+        "media": 575.3
+      },
+      "fam": {
+        "num": 629,
+        "media": 884.2
+      }
+    },
+    "51": {
+      "nombre": "Ceuta",
+      "total": {
+        "num": 9526,
+        "media": 1404.71
+      },
+      "jub": {
+        "num": 4962,
+        "media": 1733.92
+      },
+      "ip": {
+        "num": 1160,
+        "media": 1423.5
+      },
+      "viu": {
+        "num": 2624,
+        "media": 1047.64
+      },
+      "orf": {
+        "num": 733,
+        "media": 454.65
+      },
+      "fam": {
+        "num": 47,
+        "media": 937.59
+      }
+    },
+    "52": {
+      "nombre": "Melilla",
+      "total": {
+        "num": 9193,
+        "media": 1342.17
+      },
+      "jub": {
+        "num": 4700,
+        "media": 1663.41
+      },
+      "ip": {
+        "num": 1392,
+        "media": 1377.94
+      },
+      "viu": {
+        "num": 2298,
+        "media": 982.1
+      },
+      "orf": {
+        "num": 780,
+        "media": 417.84
+      },
+      "fam": {
+        "num": 23,
+        "media": 857.73
+      }
+    }
+  }
+}

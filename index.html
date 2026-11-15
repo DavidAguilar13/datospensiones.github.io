@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pensiones en España — Datos por Provincia.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f9f7f4;
+    --surface: #ffffff;
+    --border: #e8e4de;
+    --text-primary: #1a1714;
+    --text-secondary: #6b6560;
+    --text-muted: #a09a94;
+    --accent: #c84b31;
+    --accent-light: #f5ede9;
+    --amber: #e8a020;
+    --green: #2d7a5a;
+    --col-low: #fff5eb;
+    --col-mid: #f59e44;
+    --col-high: #b73a1a;
+    --shadow: 0 2px 20px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1100; /* por encima de los controles de Leaflet (z-index 1000) */
+  }
+  .logo-area h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+  }
+  .logo-area h1 span { color: var(--accent); }
+  .logo-area p {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+  .header-meta strong { color: var(--accent); font-weight: 600; }
+
+  /* HERO */
+  .hero {
+    padding: 40px 40px 0;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* KPI CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 28px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .kpi-card:hover { box-shadow: var(--shadow); }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.amber::before { background: var(--amber); }
+  .kpi-card.blue::before { background: #3b82f6; }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* MAIN LAYOUT */
+  .main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 60px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+  }
+
+  /* CONTROLS */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .controls-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+  .pill-btn {
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pill-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .pill-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* MAP */
+  .map-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .map-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .map-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .map-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  #map {
+    height: 480px;
+    background: #f0ece6;
+  }
+  .map-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .legend-bar {
+    flex: 1;
+    max-width: 200px;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #fff5eb, #fbb740, #c84b31, #7a1d0a);
+  }
+  .legend-label { font-weight: 500; font-size: 11px; color: var(--text-muted); }
+  .kpi-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .panel-badge {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .panel-body { padding: 20px; }
+
+  /* PROVINCE DETAIL */
+  .province-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+  .province-placeholder svg { margin-bottom: 12px; opacity: 0.3; }
+  .province-placeholder p { font-size: 13px; line-height: 1.6; }
+
+  .province-name-display {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .province-sub-display {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .province-main-stat {
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .province-main-stat .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .province-main-stat .big-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .province-main-stat .rank-badge {
+    text-align: right;
+  }
+  .province-main-stat .rank-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .province-main-stat .rank-label {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .type-rows { display: flex; flex-direction: column; gap: 8px; }
+  .type-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .type-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .type-name {
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex: 1;
+  }
+  .type-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .type-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .type-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: right;
+    min-width: 60px;
+  }
+
+  /* RANKING */
+  .ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .ranking-list::-webkit-scrollbar { width: 4px; }
+  .ranking-list::-webkit-scrollbar-track { background: transparent; }
+  .ranking-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-item:hover { background: var(--bg); margin: 0 -20px; padding: 9px 20px; }
+  .rank-item.highlighted { background: var(--accent-light); margin: 0 -20px; padding: 9px 20px; }
+  .rank-num-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 22px;
+    text-align: right;
+  }
+  .rank-name { font-size: 13px; font-weight: 500; flex: 1; }
+  .rank-bar-wrap {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .rank-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .rank-value {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 58px;
+    text-align: right;
+  }
+
+  /* CHART SECTION */
+  .chart-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 0;
+  }
+  .chart-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chart-title { font-size: 14px; font-weight: 600; }
+  .chart-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .chart-body { padding: 20px 24px; }
+  #barChart { max-height: 300px; }
+
+  /* TOOLTIP */
+  .leaflet-tooltip-custom {
+    background: var(--text-primary) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    color: white !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    box-shadow: var(--shadow-lg) !important;
+    pointer-events: none !important;
+  }
+  .leaflet-tooltip-custom::before { display: none !important; }
+  .tip-name { font-weight: 600; margin-bottom: 4px; }
+  .tip-val { font-size: 18px; font-weight: 700; color: #fbbf24; }
+  .tip-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    line-height: 1.8;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 1100px) {
+    .main-content { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    header, .hero, .kpi-grid, .main-content { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <h1>datos<span>pensiones</span>.es</h1>
+    <p>Estadísticas sobre pensiones contributivas y no contributivas del sistema de la Seguridad Social</p>
+  </div>
+  <div class="header-meta">
+    Datos a <strong class="js-fecha-datos">—</strong><br>
+    Fuente: INSS · Ministerio de Inclusión
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-title">¿Cuánto cobran<br>los pensionistas de tu provincia?</div>
+  <div class="hero-subtitle">Análisis de las pensiones contributivas y no contributivas del sistema de la Seguridad Social en las 50 provincias y las 2 ciudades autónomas de España.</div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Media nacional</div>
+    <div class="kpi-value" id="kpi-media">—</div>
+    <div class="kpi-sub">€ / mes · Total sistema</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="kpi-label">Provincia más alta</div>
+    <div class="kpi-value" id="kpi-max-val">—</div>
+    <div class="kpi-sub" id="kpi-max-name">—</div>
+  </div>
+  <div class="kpi-card amber">
+    <div class="kpi-label">Provincia más baja</div>
+    <div class="kpi-value" id="kpi-min-val">—</div>
+    <div class="kpi-sub" id="kpi-min-name">—</div>
+  </div>
+  <div class="kpi-card blue">
+    <div class="kpi-label">Total pensiones en España</div>
+    <div class="kpi-value" id="kpi-total">—</div>
+    <div class="kpi-sub"> *Un pensionista puede tener dos pensiones a la vez (como de jubilación y viuedad).</div>
+    <div class="kpi-note" id="kpi-total-note">Incluye jubilación, incapacidad permanente, viudedad, orfandad y a favor de familiares. Datos a <span class="js-fecha-datos">—</span>.</div>
+  </div>
+</div>
+
+<div class="main-content">
+
+  <!-- LEFT: MAP + CHART -->
+  <div>
+    <div class="controls">
+      <span class="controls-label">Mostrar</span>
+      <button class="pill-btn active" onclick="setType('total_media', this)">Total</button>
+      <button class="pill-btn" onclick="setType('jub_media', this)">Jubilación</button>
+      <button class="pill-btn" onclick="setType('ip_media', this)">Incap. Permanente</button>
+      <button class="pill-btn" onclick="setType('viu_media', this)">Viudedad</button>
+      <button class="pill-btn" onclick="setType('orf_media', this)">Orfandad</button>
+      <button class="pill-btn" onclick="setType('fam_media', this)">Fav. Familiares</button>
+    </div>
+
+    <div class="map-section">
+      <div class="map-header">
+        <div class="map-title" id="map-title">Pensión media por provincia · Total sistema</div>
+        <div class="map-hint">Pasa el cursor sobre una provincia</div>
+      </div>
+      <div id="map"></div>
+      <div class="map-footer">
+        <div class="legend">
+          <span class="legend-label" id="leg-min">—</span>
+          <div class="legend-bar"></div>
+          <span class="legend-label" id="leg-max">—</span>
+          <span style="margin-left:12px;font-size:11px;color:var(--text-muted)">€/mes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-section" style="margin-top:16px;">
+      <div class="chart-header">
+        <div class="chart-title" id="chart-title">Pensión media por tipo — Selecciona una provincia</div>
+        <div class="chart-subtitle" id="chart-subtitle">Haz clic en cualquier provincia del mapa</div>
+      </div>
+      <div class="chart-body">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Province detail -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Detalle de provincia</div>
+        <div class="panel-badge" id="selected-label">Ninguna</div>
+      </div>
+      <div class="panel-body" id="province-detail">
+        <div class="province-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          <p>Haz clic sobre cualquier<br>provincia en el mapa</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Ranking</div>
+        <div class="panel-badge" id="rank-label">Total · mayor a menor</div>
+      </div>
+      <div class="panel-body" style="padding:0 20px;">
+        <div class="ranking-list" id="ranking-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span id="footer-source">Datos extraídos del <a href="https://www.seg-social.es" target="_blank" rel="noopener">Instituto Nacional de la Seguridad Social (INSS)</a></span><br>
+  Creado por David Aguilar
+</footer>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+// Los datos se cargan de data/pensiones.json; el mapa, de data/provincias.geojson.
+// Provincias se identifican por su código INE (01–52), igual que en el GeoJSON
+// (propiedad cod_prov), así que no hace falta casar nombres.
+const FIELDS = ['total', 'jub', 'ip', 'viu', 'orf', 'fam'];
+let DATA = null;       // JSON completo (periodo, fuente…)
+let NATIONAL = {};     // { total_num, total_media, … }
+let PENSIONS = {};     // nombre → { total_num, total_media, … }
+let CODE_TO_NAME = {}; // '04' → 'Almería'
+
+function flatten(block) {
+  const o = {};
+  FIELDS.forEach(f => { o[f + '_num'] = block[f].num; o[f + '_media'] = block[f].media; });
+  return o;
+}
+
+async function loadData() {
+  const res = await fetch('data/pensiones.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  DATA = await res.json();
+  NATIONAL = flatten(DATA.nacional);
+  PENSIONS = {};
+  CODE_TO_NAME = {};
+  Object.entries(DATA.provincias).forEach(([code, p]) => {
+    PENSIONS[p.nombre] = flatten(p);
+    CODE_TO_NAME[code] = p.nombre;
+  });
+}
+
+function fechaLarga(iso) {
+  // '2026-02-01' → '1 de febrero de 2026'
+  const [y, m, d] = iso.split('-').map(Number);
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return `${d} de ${meses[m - 1]} de ${y}`;
+}
+
+function renderSourceInfo() {
+  const fecha = fechaLarga(DATA.fecha_datos);
+  document.querySelectorAll('.js-fecha-datos').forEach(el => el.textContent = fecha);
+  const f = DATA.fuente;
+  document.getElementById('footer-source').innerHTML =
+    `Datos extraídos del <a href="${f.url}" target="_blank" rel="noopener">${f.nombre}</a>` +
+    ` · fichero ${f.fichero}, hoja «${f.hoja}» · datos a ${fecha}`;
+}
+
+const TYPE_META = {
+  total_media: { label: 'Total sistema', color: '#c84b31' },
+  jub_media:   { label: 'Jubilación',    color: '#2d7a5a' },
+  ip_media:    { label: 'Incap. Permanente', color: '#3b82f6' },
+  viu_media:   { label: 'Viudedad',      color: '#7c3aed' },
+  orf_media:   { label: 'Orfandad',      color: '#e8a020' },
+  fam_media:   { label: 'Fav. Familiares', color: '#ec4899' },
+};
+
+const TYPE_COLORS = {
+  jub_media: '#2d7a5a', ip_media: '#3b82f6',
+  viu_media: '#7c3aed', orf_media: '#e8a020', fam_media: '#ec4899'
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentType = 'total_media';
+let selectedProvince = null;
+let geojsonLayer = null;
+let map, barChart;
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadData();
+  } catch (err) {
+    console.error('No se pudieron cargar los datos:', err);
+    document.querySelector('.main-content').innerHTML =
+      '<div style="padding:40px;text-align:center;color:#999;grid-column:1/-1">No se pudieron cargar los datos. Inténtalo de nuevo más tarde.</div>';
+    return;
+  }
+  renderSourceInfo();
+  initKPIs();
+  initMap();
+  initBarChart();
+  buildRanking();
+});
+
+function fmt(v) { return v != null ? v.toFixed(2).replace('.', ',') + ' €' : '—'; }
+function fmtNum(v) { return v != null ? v.toLocaleString('es-ES') : '—'; }
+
+function initKPIs() {
+  // Use official national totals from Excel
+  document.getElementById('kpi-media').textContent = NATIONAL.total_media.toFixed(2).replace('.',',') + ' €';
+  document.getElementById('kpi-total').textContent = fmtNum(NATIONAL.total_num);
+  const sorted = Object.entries(PENSIONS).sort((a,b)=>b[1].total_media-a[1].total_media);
+  const [maxName, maxD] = sorted[0];
+  const [minName, minD] = sorted[sorted.length-1];
+  document.getElementById('kpi-max-val').textContent = maxD.total_media.toFixed(2).replace('.',',') + ' €';
+  document.getElementById('kpi-max-name').textContent = maxName;
+  document.getElementById('kpi-min-val').textContent = minD.total_media.toFixed(2).replace('.',',') + ' €';
+  document.getElementById('kpi-min-name').textContent = minName;
+}
+
+// ─── MAP ─────────────────────────────────────────────────────────────────────
+function getColor(val, min, max) {
+  const t = (val - min) / (max - min);
+  const stops = [
+    [255,245,235], [251,191,64], [200,75,49], [122,29,10]
+  ];
+  const seg = t * (stops.length-1);
+  const i = Math.floor(seg), f = seg - i;
+  const a = stops[Math.min(i, stops.length-1)];
+  const b = stops[Math.min(i+1, stops.length-1)];
+  const r = Math.round(a[0]+(b[0]-a[0])*f);
+  const g = Math.round(a[1]+(b[1]-a[1])*f);
+  const bl = Math.round(a[2]+(b[2]-a[2])*f);
+  return `rgb(${r},${g},${bl})`;
+}
+
+function initMap() {
+  map = L.map('map', {
+    center: [40.4, -3.7], zoom: 5,
+    zoomControl: true, attributionControl: false,
+    scrollWheelZoom: false
+  });
+
+  // Sin mapa base: los teselas de CARTO ahora piden API key y salían con marca de agua.
+  // El coroplético se ve sobre el fondo liso de #map.
+  loadGeoJSON();
+}
+
+function loadGeoJSON() {
+  fetch('data/provincias.geojson')
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(renderMap)
+    .catch(err => {
+      console.error('No se pudo cargar el mapa:', err);
+      document.getElementById('map').innerHTML = '<div style="padding:40px;text-align:center;color:#999">No se pudo cargar el mapa.</div>';
+    });
+}
+
+// Feature del GeoJSON → { key: nombre de la provincia, d: sus datos }
+// Se casa por código INE (cod_prov), no por nombre.
+function featureData(feature) {
+  const key = CODE_TO_NAME[feature.properties.cod_prov];
+  return { key, d: key ? PENSIONS[key] : null };
+}
+
+function renderMap(geojsonData) {
+  const vals = Object.values(PENSIONS)
+    .map(d => d[currentType])
+    .filter(Boolean);
+  const min = Math.min(...vals), max = Math.max(...vals);
+
+  document.getElementById('leg-min').textContent = min.toFixed(0) + ' €';
+  document.getElementById('leg-max').textContent = max.toFixed(0) + ' €';
+
+  if (geojsonLayer) map.removeLayer(geojsonLayer);
+
+  const unmatched = geojsonData.features.filter(f => !featureData(f).d);
+  if (unmatched.length) {
+    console.warn('Provincias del mapa sin datos:',
+      unmatched.map(f => `${f.properties.cod_prov} ${f.properties.name}`));
+  }
+
+  geojsonLayer = L.geoJSON(geojsonData, {
+    style: feature => {
+      const { d } = featureData(feature);
+      const val = d ? d[currentType] : null;
+      return {
+        fillColor: val ? getColor(val, min, max) : '#ddd8d0',
+        fillOpacity: val ? 0.88 : 0.4,
+        color: '#fff',
+        weight: 1.2,
+        opacity: 1
+      };
+    },
+    onEachFeature: (feature, layer) => {
+      const fd = featureData(feature);
+      const d = fd.d;
+      const key = fd.key || feature.properties.name;
+
+      layer.on('mouseover', function(e) {
+        this.setStyle({ weight: 2.5, color: '#333', fillOpacity: 1 });
+        const val = d ? d[currentType] : null;
+        const numStr = d ? fmtNum(d.total_num) : '—';
+        L.tooltip({
+          permanent: false, sticky: true, className: 'leaflet-tooltip-custom',
+          offset: [12, 0]
+        })
+        .setContent(`
+          <div class="tip-name">${key}</div>
+          <div class="tip-val">${val ? val.toFixed(2).replace('.', ',') + ' €' : '—'}</div>
+          <div class="tip-sub">${TYPE_META[currentType].label} · ${numStr} pensionistas</div>
+        `)
+        .setLatLng(e.latlng)
+        .addTo(map);
+      });
+
+      layer.on('mousemove', e => {
+        map.eachLayer(l => { if (l.getTooltip) { const t = l.getTooltip(); if(t) t.setLatLng(e.latlng); }});
+      });
+
+      layer.on('mouseout', function() {
+        this.setStyle({
+          weight: 1.2, color: '#fff', fillOpacity: 0.88
+        });
+        map.eachLayer(l => { if (l.getTooltip && l.getTooltip()) map.removeLayer(l); });
+      });
+
+      layer.on('click', () => {
+        if (d) selectProvince(key);
+      });
+    }
+  }).addTo(map);
+}
+
+function updateMap() {
+  if (!geojsonLayer) return;
+  const vals = Object.values(PENSIONS)
+    .map(d => d[currentType]).filter(Boolean);
+  const min = Math.min(...vals), max = Math.max(...vals);
+
+  document.getElementById('leg-min').textContent = min.toFixed(0) + ' €';
+  document.getElementById('leg-max').textContent = max.toFixed(0) + ' €';
+
+  geojsonLayer.eachLayer(layer => {
+    const { d } = featureData(layer.feature);
+    const val = d ? d[currentType] : null;
+    layer.setStyle({
+      fillColor: val ? getColor(val, min, max) : '#ddd8d0',
+      fillOpacity: val ? 0.88 : 0.4,
+    });
+  });
+
+  document.getElementById('map-title').textContent =
+    `Pensión media por provincia · ${TYPE_META[currentType].label}`;
+}
+
+function setType(type, btn) {
+  currentType = type;
+  document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  updateMap();
+  buildRanking();
+  if (selectedProvince) updateBarChart(selectedProvince);
+}
+
+// ─── PROVINCE DETAIL ─────────────────────────────────────────────────────────
+function selectProvince(name) {
+  selectedProvince = name;
+  const d = PENSIONS[name];
+  if (!d) return;
+
+  document.getElementById('selected-label').textContent = name;
+  document.getElementById('chart-title').textContent = `Pensión media por tipo — ${name}`;
+  document.getElementById('chart-subtitle').textContent = `${fmtNum(d.total_num)} pensionistas · Datos a ${fechaLarga(DATA.fecha_datos)}`;
+
+  // Ranking position
+  const sorted = Object.entries(PENSIONS)
+    .filter(([,v]) => v[currentType] != null)
+    .sort((a,b) => b[1][currentType] - a[1][currentType]);
+  const rank = sorted.findIndex(([k]) => k === name) + 1;
+  const total = sorted.length;
+
+  const html = `
+    <div class="province-name-display">${name}</div>
+    <div class="province-sub-display">${fmtNum(d.total_num)} pensionistas</div>
+    <div class="province-main-stat">
+      <div>
+        <div class="big-num">${d.total_media.toFixed(0)} €</div>
+        <div class="big-label">Pensión media total</div>
+      </div>
+      <div class="rank-badge">
+        <div class="rank-num">#${rank}</div>
+        <div class="rank-label">de ${total} provincias</div>
+      </div>
+    </div>
+    <div class="type-rows">
+      ${buildTypeRows(d)}
+    </div>
+  `;
+  document.getElementById('province-detail').innerHTML = html;
+
+  updateBarChart(name);
+  buildRanking();
+}
+
+function buildTypeRows(d) {
+  const types = [
+    { mediaKey: 'jub_media', numKey: 'jub_num', label: 'Jubilación',     color: '#2d7a5a' },
+    { mediaKey: 'ip_media',  numKey: 'ip_num',  label: 'Incap. Perm.',   color: '#3b82f6' },
+    { mediaKey: 'viu_media', numKey: 'viu_num', label: 'Viudedad',       color: '#7c3aed' },
+    { mediaKey: 'orf_media', numKey: 'orf_num', label: 'Orfandad',       color: '#e8a020' },
+    { mediaKey: 'fam_media', numKey: 'fam_num', label: 'Fav. Familiar',  color: '#ec4899' },
+  ];
+  const maxNum = Math.max(...types.map(t => d[t.numKey] || 0));
+  return types.map(t => {
+    const media = d[t.mediaKey];
+    const num   = d[t.numKey];
+    const pct   = num ? (num / maxNum * 100).toFixed(0) : 0;
+    return `
+      <div class="type-row" style="align-items:flex-start;flex-direction:column;gap:4px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;width:100%">
+          <div class="type-dot" style="background:${t.color};flex-shrink:0"></div>
+          <div class="type-name" style="flex:1;font-weight:500">${t.label}</div>
+          <div style="font-size:13px;font-weight:700;color:${t.color}">${media ? media.toFixed(2).replace('.',',') + ' €' : '—'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;width:100%;padding-left:16px">
+          <div class="type-bar-wrap" style="flex:1">
+            <div class="type-bar-fill" style="width:${pct}%;background:${t.color}"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);min-width:72px;text-align:right">${num ? fmtNum(num) + ' pens.' : '—'}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ─── BAR CHART ───────────────────────────────────────────────────────────────
+function initBarChart() {
+  const ctx = document.getElementById('barChart').getContext('2d');
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jubilación', 'Incap. Perm.', 'Viudedad', 'Orfandad', 'Fav. Familiar'],
+      datasets: [{
+        data: [0, 0, 0, 0, 0],
+        backgroundColor: ['#2d7a5a','#3b82f6','#7c3aed','#e8a020','#ec4899'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + ctx.raw.toFixed(2).replace('.',',') + ' €/mes'
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          grid: { color: '#f0ece6' },
+          ticks: {
+            font: { family: "'DM Sans', sans-serif", size: 11 },
+            color: '#a09a94',
+            callback: v => v.toLocaleString('es-ES') + ' €'
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'DM Sans', sans-serif", size: 12 }, color: '#6b6560' }
+        }
+      }
+    }
+  });
+}
+
+function updateBarChart(name) {
+  const d = PENSIONS[name];
+  if (!d) return;
+  barChart.data.datasets[0].data = [
+    d.jub_media, d.ip_media, d.viu_media, d.orf_media, d.fam_media
+  ];
+  barChart.update();
+}
+
+// ─── RANKING ─────────────────────────────────────────────────────────────────
+function buildRanking() {
+  const sorted = Object.entries(PENSIONS)
+    .filter(([,v]) => v[currentType] != null)
+    .sort((a,b) => b[1][currentType] - a[1][currentType]);
+
+  const maxVal = sorted[0][1][currentType];
+  const label = TYPE_META[currentType].label;
+  document.getElementById('rank-label').textContent = `${label} · mayor a menor`;
+
+  const list = document.getElementById('ranking-list');
+  list.innerHTML = sorted.map(([name, d], i) => {
+    const val = d[currentType];
+    const pct = (val / maxVal * 100).toFixed(0);
+    const isSelected = name === selectedProvince;
+    return `
+      <div class="rank-item ${isSelected ? 'highlighted' : ''}" onclick="selectProvince('${name.replace(/'/,"\\'")}')">
+        <div class="rank-num-badge">${i+1}</div>
+        <div class="rank-name">${name}</div>
+        <div class="rank-bar-wrap">
+          <div class="rank-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="rank-value" style="color:${isSelected?'var(--accent)':'var(--text-primary)'}">${val.toFixed(0)} €</div>
+      </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
