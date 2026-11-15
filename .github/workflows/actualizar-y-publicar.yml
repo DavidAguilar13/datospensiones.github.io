@@ -101,10 +101,12 @@ jobs:
 
   publicar:
     needs: actualizar
-    # publica en cada push a main, o si la actualización ha traído datos nuevos
+    # publica en cada push a main; al lanzarlo a mano (si la actualización no ha fallado);
+    # y en la ejecución diaria solo si ha traído datos nuevos
     if: >-
       always() &&
       (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && needs.actualizar.result == 'success') ||
        (needs.actualizar.result == 'success' && needs.actualizar.outputs.cambios == 'true'))
     runs-on: ubuntu-latest
     environment:

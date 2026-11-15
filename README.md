@@ -95,6 +95,7 @@ Notas de método:
     issue con la etiqueta `aviso-datos` (o comenta en el que ya esté abierto) con el registro
     del error. La web sigue mostrando los últimos datos válidos.
 - **Cada push a `main`** (por ejemplo, al fusionar un PR) publica la web.
+- **Al lanzarlo a mano** también vuelve a publicar la web, aunque no haya datos nuevos.
 
 La web se publica con GitHub Pages en modo *GitHub Actions* (Settings → Pages → Source).
 Solo se publican `index.html`, `sobre.html` y `data/`.
