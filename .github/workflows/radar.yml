@@ -55,11 +55,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          n=$(python -c "import json; d=json.load(open('radar/novedades.json')); print(len(d['novedades']) + len(d['errores']))")
-          if [ "$n" = "0" ]; then
+          read -r n e < <(python -c "import json; d=json.load(open('radar/novedades.json')); print(len(d['novedades']), len(d['errores']))")
+          if [ "$n" = "0" ] && [ "$e" = "0" ]; then
             echo "Sin novedades: no se abre issue."
             exit 0
           fi
+          titulo="${n} novedades"
+          if [ "$e" != "0" ]; then titulo="${titulo}, ${e} fuente(s) con error"; fi
           gh label create radar --color 1d76db --description "Radar semanal de datos" --force
           hoy=$(date -u +%F)
-          gh issue create --title "Radar semanal ${hoy}: ${n} novedades" --label radar --body-file radar/novedades.md
+          gh issue create --title "Radar semanal ${hoy}: ${titulo}" --label radar --body-file radar/novedades.md
