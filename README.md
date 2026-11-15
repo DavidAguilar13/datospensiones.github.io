@@ -11,6 +11,11 @@ https://davidaguilar13.github.io/datospensiones.github.io/
 | `index.html` | La web (HTML + JS puro, Leaflet y Chart.js). Carga los datos con `fetch`. |
 | `data/pensiones.json` | Datos del último mes: nacional y las 52 provincias, por código INE. |
 | `data/provincias.geojson` | Contornos de las provincias (propiedad `cod_prov` = código INE). |
+| `data/historico.json` | Serie mensual desde enero de 2010 (nacional y por provincia, por tipo) e IPC del INE. |
+| `data/desigualdad.json` | Pensionistas por tramos de cuantía y sexo, Gini aproximado, brecha de género, mínimos. |
+| `scripts/inss.py` | Código común: descarga, lectura de los Excel (todos los formatos desde 2010) y validación. |
+| `scripts/update_data.py` | Actualización mensual (último mes, histórico, desigualdad). |
+| `scripts/build_history.py` | Reconstruye el histórico completo desde 2010. |
 
 ## Formato de `data/pensiones.json`
 
@@ -35,15 +40,23 @@ de nombre (Alacant/Alicante, Araba/Álava…) no afectan.
 
 ## Actualizar los datos
 
-`scripts/update_data.py` busca el último `CAaaaamm.xlsx` en la página de estadísticas de
-pensiones del INSS, lo descarga, lo convierte y escribe `data/pensiones.json`.
+`scripts/update_data.py` busca en la web del INSS el último `CAaaaamm.xlsx` (pensiones por
+provincia) y el último `PTASaaaamm.xlsx` (pensionistas), y en el INE la serie del IPC. Si hay
+datos nuevos, actualiza `pensiones.json`, añade el mes a `historico.json` y rehace
+`desigualdad.json`.
 
 ```bash
 pip install -r scripts/requirements.txt
 python scripts/update_data.py            # descarga y actualiza si hay un mes nuevo
 python scripts/update_data.py --dry-run  # solo comprueba, no escribe
-python scripts/update_data.py --file CA202610.xlsx   # usa un Excel ya descargado
+python scripts/update_data.py --ca CA202610.xlsx --ptas PTAS202610.xlsx   # ficheros locales
+python scripts/build_history.py          # reconstruye el histórico desde 2010 (~200 descargas)
 ```
+
+`build_history.py` guarda los Excel descargados en `.cache/inss/` (no se sube al repositorio).
+Los ficheros del INSS han cambiado de formato varias veces desde 2010 (nombre de la hoja,
+columnas, columna extra con el código de provincia…); `inss.py` los reconoce todos y valida
+cada mes por separado.
 
 Antes de escribir nada comprueba que:
 - existen la hoja «CA_Total sistema» y las columnas esperadas (número, importe y pensión media
@@ -51,10 +64,18 @@ Antes de escribir nada comprueba que:
 - están las 52 provincias y no aparece ningún nombre desconocido;
 - las pensiones medias están en rangos razonables y cuadran con importe / número;
 - la suma de las provincias da el total nacional, y la suma por tipos da el total;
-- ninguna provincia cambia más de un 15 % respecto a los datos anteriores.
+- ninguna provincia cambia más de un 15 % respecto al mes anterior;
+- en los tramos de pensionistas, la suma de tramos da el total y los rangos son razonables;
+- el IPC no tiene saltos mensuales anómalos.
 
-Si algo falla, no toca `data/pensiones.json` y termina con código 1 (código 2 si no ha podido
-descargar o leer el Excel).
+Si algo falla, no escribe ningún fichero y termina con código 1 (código 2 si no ha podido
+descargar o leer algún fichero).
+
+Notas de método:
+- **Real**: pensión media × IPC del último mes / IPC del mes correspondiente (serie
+  `IPC290751` del INE, índice general nacional).
+- **Gini**: aproximado con el punto medio de cada tramo; el tramo abierto («Más de …») se
+  ajusta para que el importe total cuadre con el importe medio publicado.
 
 ## Probar en local
 
