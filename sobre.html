@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre el proyecto — datospensiones</title>
+<meta name="description" content="Quién hace datospensiones, de dónde salen los datos y cómo leerlos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f7f4;
+    --surface: #ffffff;
+    --border: #e8e4de;
+    --text-primary: #1a1714;
+    --text-secondary: #6b6560;
+    --text-muted: #a09a94;
+    --accent: #c84b31;
+    --accent-light: #f5ede9;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo-area a { text-decoration: none; color: inherit; }
+  .logo-area h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .logo-area h1 span { color: var(--accent); }
+  .logo-area p { font-size: 12px; color: var(--text-muted); margin-top: 2px; letter-spacing: 0.3px; }
+
+  nav { display: flex; gap: 20px; font-size: 13px; font-weight: 500; }
+  nav a { color: var(--text-secondary); text-decoration: none; }
+  nav a:hover { color: var(--accent); }
+  nav a[aria-current="page"] { color: var(--accent); }
+
+  main { max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  .kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .lead { font-size: 18px; color: var(--text-secondary); font-weight: 300; margin-bottom: 40px; }
+
+  section { margin-bottom: 40px; }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  p + p { margin-top: 12px; }
+  a { color: var(--accent); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  dl { display: grid; gap: 14px; }
+  dt { font-weight: 600; }
+  dd { color: var(--text-secondary); }
+
+  ul { padding-left: 20px; }
+  li + li { margin-top: 6px; }
+
+  .note {
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    line-height: 1.8;
+  }
+  footer a { text-decoration: none; }
+
+  @media (max-width: 640px) {
+    header { padding: 20px 16px 16px; flex-direction: column; align-items: flex-start; }
+    main { padding: 32px 16px 48px; }
+    .lead { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <a href="./"><h1>datos<span>pensiones</span>.es</h1></a>
+    <p>Datos públicos, explicados y actualizados</p>
+  </div>
+  <nav>
+    <a href="./">Mapa de pensiones</a>
+    <a href="sobre.html" aria-current="page">Sobre el proyecto</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker">Sobre el proyecto</div>
+  <h1 class="page-title">Datos públicos que cualquiera pueda entender</h1>
+  <p class="lead">
+    Las administraciones publican muchísimos datos sobre el dinero público, pero suelen estar
+    repartidos en hojas de cálculo difíciles de encontrar y de leer. Este proyecto los reúne,
+    los mantiene al día y los presenta de forma clara.
+  </p>
+
+  <section>
+    <h2>Quién soy</h2>
+    <p>
+      Me llamo David Aguilar y estudio el doble grado de Derecho y Economía. Me interesan la
+      inteligencia artificial y el análisis de datos, y cómo pueden ayudar a entender mejor
+      las cuentas públicas.
+    </p>
+    <p>
+      He creado esta web para que cualquier persona pueda consultar, sin conocimientos técnicos,
+      los datos actualizados de las finanzas públicas de España.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué hay ahora mismo</h2>
+    <p>
+      Empiezo por las <strong>pensiones contributivas de la Seguridad Social</strong>: cuántas
+      pensiones hay en cada provincia y cuál es su importe medio, por tipo de pensión.
+    </p>
+    <p>
+      La idea es ir sumando más datos de finanzas públicas: afiliación a la Seguridad Social,
+      la relación entre afiliados y pensionistas, ingresos y gastos públicos…
+    </p>
+  </section>
+
+  <section>
+    <h2>De dónde salen los datos</h2>
+    <p>
+      Los datos de pensiones vienen de las estadísticas mensuales del
+      <a href="https://www.seg-social.es" target="_blank" rel="noopener">Instituto Nacional de la Seguridad Social (INSS)</a>.
+      No los modifico: solo los ordeno y los muestro. En cada página se indica
+      la fecha a la que se refieren y el fichero de origen.
+    </p>
+    <p>
+      El INSS publica datos nuevos cada mes. Estoy preparando un sistema para que la web se
+      actualice sola cada vez que salgan, sin intervención manual, y que nunca publique
+      datos que no hayan pasado unas comprobaciones básicas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cómo leer los datos</h2>
+    <div class="card">
+      <dl>
+        <div>
+          <dt>Pensión media</dt>
+          <dd>Importe medio mensual en euros brutos de las pensiones de cada provincia.</dd>
+        </div>
+        <div>
+          <dt>Número de pensiones</dt>
+          <dd>
+            Cuenta pensiones, no personas: alguien puede cobrar dos a la vez
+            (por ejemplo, de jubilación y de viudedad).
+          </dd>
+        </div>
+        <div>
+          <dt>Tipos de pensión</dt>
+          <dd>
+            Jubilación, incapacidad permanente, viudedad, orfandad y a favor de familiares.
+            El «total sistema» las suma todas.
+          </dd>
+        </div>
+        <div>
+          <dt>Provincias</dt>
+          <dd>Las 50 provincias y las ciudades autónomas de Ceuta y Melilla.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <p class="note">
+      Este es un proyecto personal e independiente, sin relación con ninguna administración
+      pública. Si ves algún error, el código y los datos están en
+      <a href="https://github.com/DavidAguilar13/datospensiones.github.io" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+  </section>
+</main>
+
+<footer>
+  Datos: <a href="https://www.seg-social.es" target="_blank" rel="noopener">Instituto Nacional de la Seguridad Social (INSS)</a><br>
+  Creado por David Aguilar
+</footer>
+
+</body>
+</html>
