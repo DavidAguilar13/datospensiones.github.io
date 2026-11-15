@@ -1,0 +1,487 @@
+{
+  "generado": "2026-11-15T13:42Z",
+  "datos": {
+    "pensiones": "2026-10",
+    "pensionistas": "2026-10",
+    "salarios_ultimo_trimestre": "2026-T2"
+  },
+  "web": "https://davidaguilar13.github.io/datospensiones.github.io/",
+  "temas": [
+    {
+      "id": "novedades_mes",
+      "titulo": "Pensiones: lo nuevo de 2026-10",
+      "pregunta": "¿Qué ha cambiado en el último dato publicado?",
+      "cifras": [
+        {
+          "id": "media_ultimo_mes",
+          "texto": "Pensión media del sistema (2026-10)",
+          "valor": 1376.14,
+          "unidad": "€/mes",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "num_pensiones",
+          "texto": "Número de pensiones (2026-10)",
+          "valor": 10565782,
+          "unidad": "pensiones",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "var_mensual_num",
+          "texto": "Pensiones nuevas netas en el último mes (2026-09 → 2026-10)",
+          "valor": 18365,
+          "unidad": "pensiones",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "var_interanual_media_nominal",
+          "texto": "Variación interanual de la pensión media, nominal (2025-10 → 2026-10)",
+          "valor": 4.6,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "var_interanual_media_real",
+          "texto": "Variación interanual de la pensión media, real (2025-10 → 2026-10)",
+          "valor": -0.2,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "var_interanual_num",
+          "texto": "Variación interanual del número de pensiones (2025-10 → 2026-10)",
+          "valor": 1.6,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "prov_mas_sube",
+          "texto": "Provincia donde más sube la pensión media en un año",
+          "valor": 5.9,
+          "unidad": "%",
+          "detalle": "Cuenca",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "prov_menos_sube",
+          "texto": "Provincia donde menos sube la pensión media en un año",
+          "valor": 3.8,
+          "unidad": "%",
+          "detalle": "Asturias",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "var_interanual_real_jub",
+          "texto": "Variación interanual real de la pensión media de jubilación",
+          "valor": -0.4,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "var_interanual_real_viu",
+          "texto": "Variación interanual real de la pensión media de viudedad",
+          "valor": -0.6,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "var_interanual_real_ip",
+          "texto": "Variación interanual real de la pensión media de incapacidad permanente",
+          "valor": -1.1,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "real_desde_2010_nacional",
+          "texto": "Variación real de la pensión media en España, 2010-01 a 2026-10",
+          "valor": 22.7,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "real_desde_2010_max",
+          "texto": "Provincia con mayor subida real desde 2010",
+          "valor": 30.6,
+          "unidad": "%",
+          "detalle": "Soria",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "real_desde_2010_min",
+          "texto": "Provincia con menor subida real desde 2010",
+          "valor": 17.1,
+          "unidad": "%",
+          "detalle": "Huelva",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        }
+      ],
+      "graficos": [
+        "pension_media_nominal_vs_real.png",
+        "provincias_variacion_real_desde_2010.png"
+      ],
+      "advertencias": [
+        "La pensión media sube también por efecto sustitución (altas con pensiones más altas que las bajas)."
+      ],
+      "fuentes": [
+        {
+          "nombre": "INSS, pensiones contributivas en vigor (total sistema)",
+          "url": "https://www.seg-social.es/wps/portal/wss/internet/EstadisticasPresupuestosEstudios/Estadisticas/EST23/2575"
+        },
+        {
+          "nombre": "INE, IPC general (IPC290751)",
+          "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=50902"
+        }
+      ]
+    },
+    {
+      "id": "pensiones_vs_salarios",
+      "titulo": "Pensiones frente a salarios reales",
+      "pregunta": "¿Han ganado o perdido poder adquisitivo las pensiones frente a los salarios?",
+      "cifras": [
+        {
+          "id": "pension_real_acum",
+          "texto": "Pensión media real 2010–2025",
+          "valor": 24.6,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, IPC general"
+        },
+        {
+          "id": "salario_real_acum",
+          "texto": "Salario medio real 2010–2025",
+          "valor": -6.1,
+          "unidad": "%",
+          "fuente": "INE, Encuesta Trimestral de Coste Laboral; INE, IPC general"
+        },
+        {
+          "id": "ratio_inicio",
+          "texto": "Pensión media / salario medio en 2010",
+          "valor": 41.6,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, Encuesta Trimestral de Coste Laboral"
+        },
+        {
+          "id": "ratio_fin",
+          "texto": "Pensión media / salario medio en 2025",
+          "valor": 55.2,
+          "unidad": "%",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema); INE, Encuesta Trimestral de Coste Laboral"
+        },
+        {
+          "id": "anyos_pension_gana",
+          "texto": "Años entre 2011 y 2025 en que la pensión media real creció más que el salario real",
+          "valor": 14,
+          "unidad": "de 15",
+          "detalle": [
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "fuente": "Cálculo propio"
+        },
+        {
+          "id": "pension_media_nominal_fin",
+          "texto": "Pensión media mensual (media de 2025)",
+          "valor": 1311.69,
+          "unidad": "€",
+          "fuente": "INSS, pensiones contributivas en vigor (total sistema)"
+        },
+        {
+          "id": "salario_medio_nominal_fin",
+          "texto": "Coste salarial medio por trabajador y mes (media de 2025)",
+          "valor": 2376.55,
+          "unidad": "€",
+          "fuente": "INE, Encuesta Trimestral de Coste Laboral"
+        }
+      ],
+      "serie_anual": [
+        {
+          "anyo": 2010,
+          "pension_media": 779.47,
+          "salario_medio": 1875.23,
+          "ipc": 74.062,
+          "pension_real_idx": 100.0,
+          "salario_real_idx": 100.0,
+          "ratio_pension_salario": 41.6
+        },
+        {
+          "anyo": 2011,
+          "pension_media": 804.94,
+          "salario_medio": 1894.84,
+          "ipc": 76.429,
+          "pension_real_idx": 100.1,
+          "salario_real_idx": 97.9,
+          "ratio_pension_salario": 42.5
+        },
+        {
+          "anyo": 2012,
+          "pension_media": 829.77,
+          "salario_medio": 1883.54,
+          "ipc": 78.298,
+          "pension_real_idx": 100.7,
+          "salario_real_idx": 95.0,
+          "ratio_pension_salario": 44.1
+        },
+        {
+          "anyo": 2013,
+          "pension_media": 856.35,
+          "salario_medio": 1883.76,
+          "ipc": 79.401,
+          "pension_real_idx": 102.5,
+          "salario_real_idx": 93.7,
+          "ratio_pension_salario": 45.5
+        },
+        {
+          "anyo": 2014,
+          "pension_media": 870.99,
+          "salario_medio": 1881.91,
+          "ipc": 79.281,
+          "pension_real_idx": 104.4,
+          "salario_real_idx": 93.7,
+          "ratio_pension_salario": 46.3
+        },
+        {
+          "anyo": 2015,
+          "pension_media": 886.79,
+          "salario_medio": 1902.37,
+          "ipc": 78.885,
+          "pension_real_idx": 106.8,
+          "salario_real_idx": 95.2,
+          "ratio_pension_salario": 46.6
+        },
+        {
+          "anyo": 2016,
+          "pension_media": 903.54,
+          "salario_medio": 1897.5,
+          "ipc": 78.725,
+          "pension_real_idx": 109.1,
+          "salario_real_idx": 95.2,
+          "ratio_pension_salario": 47.6
+        },
+        {
+          "anyo": 2017,
+          "pension_media": 920.59,
+          "salario_medio": 1900.1,
+          "ipc": 80.264,
+          "pension_real_idx": 109.0,
+          "salario_real_idx": 93.5,
+          "ratio_pension_salario": 48.4
+        },
+        {
+          "anyo": 2018,
+          "pension_media": 944.65,
+          "salario_medio": 1919.42,
+          "ipc": 81.609,
+          "pension_real_idx": 110.0,
+          "salario_real_idx": 92.9,
+          "ratio_pension_salario": 49.2
+        },
+        {
+          "anyo": 2019,
+          "pension_media": 990.49,
+          "salario_medio": 1955.19,
+          "ipc": 82.18,
+          "pension_real_idx": 114.5,
+          "salario_real_idx": 94.0,
+          "ratio_pension_salario": 50.7
+        },
+        {
+          "anyo": 2020,
+          "pension_media": 1011.02,
+          "salario_medio": 1903.58,
+          "ipc": 81.915,
+          "pension_real_idx": 117.3,
+          "salario_real_idx": 91.8,
+          "ratio_pension_salario": 53.1
+        },
+        {
+          "anyo": 2021,
+          "pension_media": 1034.01,
+          "salario_medio": 2022.59,
+          "ipc": 84.448,
+          "pension_real_idx": 116.3,
+          "salario_real_idx": 94.6,
+          "ratio_pension_salario": 51.1
+        },
+        {
+          "anyo": 2022,
+          "pension_media": 1089.83,
+          "salario_medio": 2115.14,
+          "ipc": 91.534,
+          "pension_real_idx": 113.1,
+          "salario_real_idx": 91.3,
+          "ratio_pension_salario": 51.5
+        },
+        {
+          "anyo": 2023,
+          "pension_media": 1194.72,
+          "salario_medio": 2216.61,
+          "ipc": 94.767,
+          "pension_real_idx": 119.8,
+          "salario_real_idx": 92.4,
+          "ratio_pension_salario": 53.9
+        },
+        {
+          "anyo": 2024,
+          "pension_media": 1255.41,
+          "salario_medio": 2301.85,
+          "ipc": 97.396,
+          "pension_real_idx": 122.5,
+          "salario_real_idx": 93.3,
+          "ratio_pension_salario": 54.5
+        },
+        {
+          "anyo": 2025,
+          "pension_media": 1311.69,
+          "salario_medio": 2376.55,
+          "ipc": 100.0,
+          "pension_real_idx": 124.6,
+          "salario_real_idx": 93.9,
+          "ratio_pension_salario": 55.2
+        }
+      ],
+      "graficos": [
+        "pensiones_vs_salarios_real_indice.png",
+        "pension_como_porcentaje_del_salario.png"
+      ],
+      "advertencias": [
+        "La pensión media no es la revalorización: sube también porque las pensiones nuevas son más altas que las que se dan de baja (efecto sustitución). No describe lo que le pasa a un pensionista concreto.",
+        "El salario es el coste salarial total por trabajador asalariado y mes (ETCL): incluye pagas extra prorrateadas y no incluye a los autónomos.",
+        "La pensión media es por pensión (no por pensionista) y en 14 pagas; el salario, por mes en 12. Por eso el cociente pensión/salario sirve para ver la tendencia, no como tasa de sustitución.",
+        "Se comparan medias anuales de años completos (2010-2025)."
+      ],
+      "fuentes": [
+        {
+          "nombre": "INSS, pensiones contributivas en vigor (total sistema)",
+          "url": "https://www.seg-social.es/wps/portal/wss/internet/EstadisticasPresupuestosEstudios/Estadisticas/EST23/2575"
+        },
+        {
+          "nombre": "INE, Encuesta Trimestral de Coste Laboral — Coste salarial total por trabajador y mes (ETCL) (ETCL1527)",
+          "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=6038"
+        },
+        {
+          "nombre": "INE, IPC general (IPC290751)",
+          "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=50902"
+        }
+      ]
+    },
+    {
+      "id": "desigualdad",
+      "titulo": "Desigualdad entre pensionistas",
+      "pregunta": "¿Cómo se reparte el dinero de las pensiones entre las personas que las cobran?",
+      "cifras": [
+        {
+          "id": "gini",
+          "texto": "Índice de Gini de los pensionistas (aprox.)",
+          "valor": 0.295,
+          "unidad": "",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "brecha_genero",
+          "texto": "Brecha de género en el importe medio por pensionista",
+          "valor": 21.2,
+          "unidad": "%",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "mediana",
+          "texto": "Pensionista mediano (aprox.)",
+          "valor": 1261.0,
+          "unidad": "€/mes",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "mediana_mujeres",
+          "texto": "Pensionista mediana, mujeres (aprox.)",
+          "valor": 1044.0,
+          "unidad": "€/mes",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "mediana_hombres",
+          "texto": "Pensionista mediano, hombres (aprox.)",
+          "valor": 1442.0,
+          "unidad": "€/mes",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "p90_p10",
+          "texto": "P90/P10",
+          "valor": 4.11,
+          "unidad": "veces",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "cuota_50_inferior",
+          "texto": "Parte del importe total que cobra el 50 % que menos cobra",
+          "valor": 29.0,
+          "unidad": "%",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "cuota_10_superior",
+          "texto": "Parte del importe total que cobra el 10 % que más cobra",
+          "valor": 21.1,
+          "unidad": "%",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "bajo_smi",
+          "texto": "Pensionistas por debajo del SMI",
+          "valor": 47.9,
+          "unidad": "%",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "bajo_smi_max",
+          "texto": "Provincia con más pensionistas bajo el SMI",
+          "valor": 66.8,
+          "unidad": "%",
+          "detalle": "Ourense",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "bajo_smi_min",
+          "texto": "Provincia con menos pensionistas bajo el SMI",
+          "valor": 29.8,
+          "unidad": "%",
+          "detalle": "Álava",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        },
+        {
+          "id": "minimos",
+          "texto": "Pensionistas con complemento a mínimos",
+          "valor": 22.2,
+          "unidad": "%",
+          "fuente": "INSS, pensionistas por tramos de cuantía"
+        }
+      ],
+      "graficos": [
+        "pensionistas_por_tramo_mujeres_hombres.png"
+      ],
+      "advertencias": [
+        "Cuenta personas (pensionistas), no pensiones: el importe es la suma de todas las pensiones de cada persona.",
+        "Gini, percentiles y cuotas son aproximados: se calculan a partir de tramos de cuantía.",
+        "Estar por debajo del SMI no implica pobreza: muchos pensionistas tienen otros ingresos o pensiones de viudedad/orfandad que no sustituyen un salario.",
+        "La brecha de género por pensionista (que incluye viudedad) es menor que la de las pensiones de jubilación; no mezclar con cifras de otras fuentes que miden otra cosa."
+      ],
+      "fuentes": [
+        {
+          "nombre": "INSS, pensionistas por tramos de cuantía",
+          "url": "https://www.seg-social.es/wps/portal/wss/internet/EstadisticasPresupuestosEstudios/Estadisticas/EST23/26bce586-014b-4c4e-9484-009cee21e271"
+        }
+      ]
+    }
+  ]
+}

@@ -3,3 +3,4 @@ openpyxl==3.1.5
 defusedxml==0.7.1   # openpyxl lo usa solo para leer XML de forma segura (evita «bombas XML»)
 requests==2.34.2
 truststore==0.10.5
+matplotlib==3.10.9  # gráficos del analista
