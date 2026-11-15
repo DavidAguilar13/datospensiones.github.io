@@ -100,6 +100,19 @@ Notas de método:
 La web se publica con GitHub Pages en modo *GitHub Actions* (Settings → Pages → Source).
 Solo se publican `index.html`, `sobre.html`, `data/` y `assets/`.
 
+## Analista semanal
+
+Cada lunes se prepara un borrador de post para Substack y un hilo para X:
+
+1. **Datos y gráficos (código, sin IA)**: `.github/workflows/analista-datos.yml` (lunes 5:00 UTC)
+   ejecuta `scripts/analista/hallazgos.py`, que calcula las cifras a partir de `data/` y de la
+   serie de salarios del INE (ETCL, coste salarial total por trabajador y mes) y genera los
+   gráficos con el estilo de David (`scripts/analista/estilo.py`). Resultado en `analisis/`
+   (no se publica en la web).
+2. **Redacción (rutina de Claude)**: sigue `ANALISTA.md`. Solo puede usar las cifras de
+   `analisis/hallazgos.json`, deja huecos para la opinión de David y entrega todo como pull
+   request en `borradores/AAAA-MM-DD/` (post, hilo, gráficos y notas). Nunca publica.
+
 ## Seguridad y privacidad
 
 - **Sin dependencias externas en la web**: fuentes (`assets/fonts/`, licencia SIL OFL), Leaflet
