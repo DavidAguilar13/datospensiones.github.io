@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Solo se carga código de esta web; la única conexión externa es el contador de visitas -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://davidaguilar.goatcounter.com; connect-src 'self' https://davidaguilar.goatcounter.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Pensiones en España — Datos por Provincia.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/leaflet-1.9.4.css">
+<script src="assets/vendor/leaflet-1.9.4.js"></script>
+<script src="assets/vendor/chart-4.4.0.umd.js"></script>
 <style>
   :root {
     --bg: #f9f7f4;
@@ -826,13 +828,20 @@ function fechaLarga(iso) {
   return `${d} de ${meses[m - 1]} de ${y}`;
 }
 
+// Escapa texto que viene de los ficheros de datos antes de meterlo en HTML
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+// Solo enlaces http(s); cualquier otra cosa se descarta
+function safeUrl(u) { return /^https?:\/\//i.test(String(u)) ? esc(u) : '#'; }
+
 function renderSourceInfo() {
   const fecha = fechaLarga(DATA.fecha_datos);
   document.querySelectorAll('.js-fecha-datos').forEach(el => el.textContent = fecha);
   const f = DATA.fuente;
   document.getElementById('footer-source').innerHTML =
-    `Datos extraídos del <a href="${f.url}" target="_blank" rel="noopener">${f.nombre}</a>` +
-    ` · fichero ${f.fichero}, hoja «${f.hoja}» · datos a ${fecha}`;
+    `Datos extraídos del <a href="${safeUrl(f.url)}" target="_blank" rel="noopener">${esc(f.nombre)}</a>` +
+    ` · fichero ${esc(f.fichero)}, hoja «${esc(f.hoja)}» · datos a ${esc(fecha)}`;
 }
 
 const TYPE_META = {
@@ -977,7 +986,7 @@ function renderMap(geojsonData) {
         const val = d ? d[currentType] : null;
         const num = d ? d[currentType.replace('_media', '_num')] : null;
         return `
-          <div class="tip-name">${key}</div>
+          <div class="tip-name">${esc(key)}</div>
           <div class="tip-val">${val ? val.toFixed(2).replace('.', ',') + ' €' : '—'}</div>
           <div class="tip-sub">${TYPE_META[currentType].label} · ${fmtNum(num)} pensiones</div>`;
       }, { sticky: true, direction: 'right', offset: [12, 0], className: 'leaflet-tooltip-custom' });
@@ -1048,7 +1057,7 @@ function selectProvince(name) {
   const total = sorted.length;
 
   const html = `
-    <div class="province-name-display">${name}</div>
+    <div class="province-name-display">${esc(name)}</div>
     <div class="province-sub-display">${fmtNum(d.total_num)} pensionistas</div>
     <div class="province-main-stat">
       <div>
@@ -1170,9 +1179,9 @@ function buildRanking() {
     const pct = (val / maxVal * 100).toFixed(0);
     const isSelected = name === selectedProvince;
     return `
-      <div class="rank-item ${isSelected ? 'highlighted' : ''}" onclick="selectProvince('${name.replace(/'/,"\\'")}')">
+      <div class="rank-item ${isSelected ? 'highlighted' : ''}" data-name="${esc(name)}" onclick="selectProvince(this.dataset.name)">
         <div class="rank-num-badge">${i+1}</div>
-        <div class="rank-name">${name}</div>
+        <div class="rank-name">${esc(name)}</div>
         <div class="rank-bar-wrap">
           <div class="rank-bar-fill" style="width:${pct}%"></div>
         </div>
@@ -1282,9 +1291,9 @@ function updateEvolution() {
   document.getElementById('evo-chips').innerHTML = chips.join('');
 
   document.getElementById('evo-note').innerHTML =
-    `Fuente: <a href="${HIST.fuente.url}" target="_blank" rel="noopener">${HIST.fuente.nombre}</a>, pensiones contributivas en vigor ` +
+    `Fuente: <a href="${safeUrl(HIST.fuente.url)}" target="_blank" rel="noopener">${esc(HIST.fuente.nombre)}</a>, pensiones contributivas en vigor ` +
     `a día 1 de cada mes (total sistema). Valores reales: pensión media deflactada con el ` +
-    `<a href="${HIST.ipc.url}" target="_blank" rel="noopener">${HIST.ipc.nombre}</a> (${HIST.ipc.fuente}) del mismo mes, ` +
+    `<a href="${safeUrl(HIST.ipc.url)}" target="_blank" rel="noopener">${esc(HIST.ipc.nombre)}</a> (${esc(HIST.ipc.fuente)}) del mismo mes, ` +
     `expresada en euros de ${periodLong(P[base])}. La media sube también porque las pensiones nuevas suelen ser ` +
     `más altas que las de quienes dejan de cobrar: no equivale a la subida de una pensión concreta.`;
 }
@@ -1346,15 +1355,15 @@ function renderSmi(d) {
     `De ${pct1(lo.bajo_smi_pct)} en ${lo.nombre} a ${pct1(hi.bajo_smi_pct)} en ${hi.nombre}`;
   const max = hi.bajo_smi_pct;
   document.getElementById('smi-list').innerHTML = sorted.map((p, i) => `
-    <div class="rank-item" onclick="selectProvince('${p.nombre.replace(/'/g, "\\'")}'); document.getElementById('map').scrollIntoView({behavior:'smooth'})">
+    <div class="rank-item" data-name="${esc(p.nombre)}" onclick="selectProvince(this.dataset.name); document.getElementById('map').scrollIntoView({behavior:'smooth'})">
       <div class="rank-num-badge">${i + 1}</div>
-      <div class="rank-name">${p.nombre}</div>
+      <div class="rank-name">${esc(p.nombre)}</div>
       <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${(p.bajo_smi_pct / max * 100).toFixed(0)}%"></div></div>
       <div class="rank-value">${pct1(p.bajo_smi_pct)}</div>
     </div>`).join('');
   document.getElementById('smi-note').innerHTML =
     `Porcentaje de pensionistas cuya suma de pensiones es inferior al salario mínimo interprofesional vigente, ` +
-    `según la hoja «Tramos» del fichero ${d.fuente.fichero} del INSS. Media nacional: ${pct1(nat.bajo_smi_pct)}. ` +
+    `según la hoja «Tramos» del fichero ${esc(d.fuente.fichero)} del INSS. Media nacional: ${pct1(nat.bajo_smi_pct)}. ` +
     `Ojo: muchos de estos pensionistas tienen otros ingresos, o una pensión de viudedad u orfandad que no sustituye a un salario.`;
 }
 
@@ -1398,8 +1407,8 @@ async function loadInequality() {
   document.getElementById('ineq-subtitle').textContent =
     `${fmtNum(d.pensionistas.ambos)} pensionistas · datos a ${fechaLarga(d.fecha_datos)}`;
   document.getElementById('ineq-note').innerHTML =
-    `Fuente: <a href="${d.fuente.url}" target="_blank" rel="noopener">${d.fuente.nombre}</a>, fichero ${d.fuente.fichero} ` +
-    `(hojas «${d.fuente.hojas.join('» y «')}»). Tramos de 100 € salvo el primero; «Pensión máxima» agrupa a quienes ` +
+    `Fuente: <a href="${safeUrl(d.fuente.url)}" target="_blank" rel="noopener">${esc(d.fuente.nombre)}</a>, fichero ${esc(d.fuente.fichero)} ` +
+    `(hojas «${d.fuente.hojas.map(esc).join('» y «')}»). Tramos de 100 € salvo el primero; «Pensión máxima» agrupa a quienes ` +
     `cobran justo la pensión máxima. El pico entre 850 y 1.000 € corresponde sobre todo a pensiones con complemento a mínimos. ` +
     `El índice de Gini es aproximado: se calcula con el punto medio de cada tramo.`;
 
@@ -1430,6 +1439,6 @@ async function loadInequality() {
 }
 </script>
 <!-- Estadísticas de visitas anónimas, sin cookies: https://www.goatcounter.com -->
-<script data-goatcounter="https://davidaguilar.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://davidaguilar.goatcounter.com/count" async src="assets/vendor/goatcounter-count.js"></script>
 </body>
 </html>
