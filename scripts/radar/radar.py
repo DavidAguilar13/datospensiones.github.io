@@ -254,8 +254,42 @@ def radar_boe(desde: date, estado: dict) -> list[dict]:
     return nuevas
 
 
+def get_text_con_intermedio(url: str) -> str:
+    """Descarga una web cuyo servidor no envía el certificado intermedio (le pasa a la AIReF).
+
+    Windows lo completa solo, pero Linux (GitHub Actions) no. Si falla la verificación, se
+    descarga el intermedio desde la dirección que indica el propio certificado (caIssuers)
+    y se verifica la cadena entera contra las raíces del sistema: no se desactiva nada.
+    """
+    import ssl
+    import tempfile
+    import urllib.request
+    from urllib.parse import urlparse
+
+    try:
+        return inss.get_text(url)
+    except Exception as e:
+        if "CERTIFICATE_VERIFY_FAILED" not in str(e):
+            raise
+    host = urlparse(url).hostname
+    hoja = ssl.get_server_certificate((host, 443))
+    with tempfile.NamedTemporaryFile("w", suffix=".pem", delete=False) as f:
+        f.write(hoja)
+    emisores = ssl._ssl._test_decode_cert(f.name).get("caIssuers") or ()
+    Path(f.name).unlink(missing_ok=True)
+    if not emisores:
+        raise RuntimeError(f"{host}: certificado incompleto y sin dirección del intermedio")
+    datos = inss.session().get(emisores[0], timeout=60).content
+    intermedio = datos.decode("ascii") if datos.startswith(b"-----BEGIN") else ssl.DER_cert_to_PEM_cert(datos)
+    ctx = ssl.create_default_context()
+    ctx.load_verify_locations(cadata=intermedio)
+    pet = urllib.request.Request(url, headers={"User-Agent": inss.USER_AGENT})
+    with urllib.request.urlopen(pet, context=ctx, timeout=60) as r:
+        return r.read().decode("utf-8")
+
+
 def radar_airef(desde: date, estado: dict) -> list[dict]:
-    raiz = ElementTree.fromstring(inss.get_text(AIREF_RSS).encode("utf-8"))
+    raiz = ElementTree.fromstring(get_text_con_intermedio(AIREF_RSS).encode("utf-8"))
     nuevas = []
     for item in raiz.iter("item"):
         titulo = (item.findtext("title") or "").strip()
