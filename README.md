@@ -113,6 +113,24 @@ Cada lunes se prepara un borrador de post para Substack y un hilo para X:
    `analisis/hallazgos.json`, deja huecos para la opinión de David y entrega todo como pull
    request en `borradores/AAAA-MM-DD/` (post, hilo, gráficos y notas). Nunca publica.
 
+## Radar de datos
+
+Cada domingo, antes del analista, se mira qué han publicado las fuentes oficiales sobre
+pensiones y Seguridad Social, Estado y deuda, demografía, y vivienda y desigualdad:
+
+1. **Detección (código, sin IA)**: `.github/workflows/radar.yml` (domingo 6:00 UTC) ejecuta
+   `scripts/radar/radar.py`, que compara con la semana anterior (`radar/estado.json`):
+   operaciones del INE, series de Eurostat para España, déficit y deuda de las AAPP del
+   Banco de España, disposiciones generales del BOE (filtradas por palabras clave) y
+   publicaciones de la AIReF. Escribe `radar/novedades.json` y abre un issue con la etiqueta
+   `radar`. Si una fuente falla, lo dice en el issue y sigue con las demás.
+2. **Interpretación (rutina de Claude)**: sigue `RADAR.md`. Comenta el issue (qué importa,
+   por qué e ideas de post, sin cifras propias) y, si un dato encaja, abre como mucho un PR
+   que lo añade a `scripts/analista/hallazgos.py` con su validación. Nunca fusiona.
+
+Los PR que tocan `scripts/` se comprueban con `.github/workflows/comprobar-pr.yml`.
+La afiliación a la Seguridad Social aún no se vigila: su web no tiene enlaces estables.
+
 ## Seguridad y privacidad
 
 - **Sin dependencias externas en la web**: fuentes (`assets/fonts/`, licencia SIL OFL), Leaflet
