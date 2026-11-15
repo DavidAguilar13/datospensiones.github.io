@@ -471,10 +471,81 @@
   }
   footer a { color: var(--accent); text-decoration: none; }
 
+  /* EVOLUCIÓN Y DESIGUALDAD */
+  .wide-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 40px;
+  }
+  .section-kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .section-intro {
+    color: var(--text-secondary);
+    max-width: 760px;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .chart-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .chip strong { color: var(--text-primary); font-weight: 600; }
+  .up { color: var(--green) !important; }
+  .down { color: var(--accent) !important; }
+  .chart-canvas-wrap { position: relative; height: 340px; }
+  .chart-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 12px 24px 16px;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .section-loading { padding: 40px; text-align: center; color: var(--text-muted); }
+
   @media (max-width: 1100px) {
     .main-content { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    header, .hero, .kpi-grid, .main-content { padding-left: 20px; padding-right: 20px; }
+    .kpi-grid, .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    header, .hero, .kpi-grid, .main-content, .wide-section { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 640px) {
+    header { padding: 16px; flex-direction: column; align-items: flex-start; gap: 8px; position: static; }
+    .header-meta { text-align: left; }
+    .hero, .kpi-grid, .main-content, .wide-section { padding-left: 16px; padding-right: 16px; }
+    .kpi-grid, .stat-grid { grid-template-columns: 1fr; }
+    .chart-canvas-wrap { height: 280px; }
+    #map { height: 360px; }
   }
 </style>
 </head>
@@ -596,6 +667,59 @@
   </div>
 </div>
 
+<!-- EVOLUCIÓN -->
+<section class="wide-section" id="evolucion">
+  <div class="section-kicker">Evolución</div>
+  <h2 class="section-title">¿Ha ganado poder adquisitivo la pensión media?</h2>
+  <p class="section-intro">
+    Pensión media mensual desde enero de 2010, en euros de cada momento (nominal) y descontando
+    la inflación (real, en euros de hoy). El gráfico sigue al tipo de pensión y a la provincia
+    que elijas arriba.
+  </p>
+  <div class="chart-section">
+    <div class="chart-header">
+      <div class="chart-toolbar">
+        <div>
+          <div class="chart-title" id="evo-title">Pensión media · Total sistema · España</div>
+          <div class="chart-subtitle" id="evo-subtitle">Cargando…</div>
+        </div>
+        <button class="pill-btn" id="evo-reset" style="display:none" onclick="resetProvince()">Ver España</button>
+      </div>
+      <div class="chips" id="evo-chips"></div>
+    </div>
+    <div class="chart-body">
+      <div class="chart-canvas-wrap"><canvas id="evoChart"></canvas></div>
+    </div>
+    <div class="chart-note" id="evo-note"></div>
+  </div>
+</section>
+
+<!-- DESIGUALDAD -->
+<section class="wide-section" id="desigualdad">
+  <div class="section-kicker">Desigualdad</div>
+  <h2 class="section-title">¿Cómo se reparten las pensiones entre los pensionistas?</h2>
+  <p class="section-intro">
+    Aquí se cuentan <strong>personas</strong>, no pensiones: el importe de cada pensionista es la suma
+    de todas las pensiones que cobra (por ejemplo, jubilación más viudedad).
+  </p>
+  <div class="stat-grid" id="ineq-stats">
+    <div class="kpi-card"><div class="kpi-label">Índice de Gini (aprox.)</div><div class="kpi-value" id="ineq-gini">—</div><div class="kpi-sub">0 = todos cobran lo mismo · 1 = máxima desigualdad</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Brecha de género</div><div class="kpi-value" id="ineq-brecha">—</div><div class="kpi-sub" id="ineq-brecha-sub">—</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Con complemento a mínimos</div><div class="kpi-value" id="ineq-min">—</div><div class="kpi-sub" id="ineq-min-sub">—</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Pensionista mediano</div><div class="kpi-value" id="ineq-mediana">—</div><div class="kpi-sub">la mitad cobra menos y la otra mitad más</div></div>
+  </div>
+  <div class="chart-section">
+    <div class="chart-header">
+      <div class="chart-title">Pensionistas por cuantía mensual · mujeres y hombres</div>
+      <div class="chart-subtitle" id="ineq-subtitle">Cargando…</div>
+    </div>
+    <div class="chart-body">
+      <div class="chart-canvas-wrap"><canvas id="ineqChart"></canvas></div>
+    </div>
+    <div class="chart-note" id="ineq-note"></div>
+  </div>
+</section>
+
 <footer>
   <span id="footer-source">Datos extraídos del <a href="https://www.seg-social.es" target="_blank" rel="noopener">Instituto Nacional de la Seguridad Social (INSS)</a></span><br>
   Creado por David Aguilar · <a href="sobre.html">Sobre el proyecto</a> · <a href="https://davidaguilar.substack.com/" target="_blank" rel="noopener">Substack</a>
@@ -682,6 +806,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMap();
   initBarChart();
   buildRanking();
+  // Secciones de abajo: se cargan aparte para no retrasar el mapa
+  loadEvolution();
+  loadInequality();
 });
 
 function fmt(v) { return v != null ? v.toFixed(2).replace('.', ',') + ' €' : '—'; }
@@ -843,6 +970,7 @@ function setType(type, btn) {
   updateMap();
   buildRanking();
   if (selectedProvince) updateBarChart(selectedProvince);
+  updateEvolution();
 }
 
 // ─── PROVINCE DETAIL ─────────────────────────────────────────────────────────
@@ -882,6 +1010,7 @@ function selectProvince(name) {
   document.getElementById('province-detail').innerHTML = html;
 
   updateBarChart(name);
+  updateEvolution();
   buildRanking();
 }
 
@@ -993,6 +1122,171 @@ function buildRanking() {
         <div class="rank-value" style="color:${isSelected?'var(--accent)':'var(--text-primary)'}">${val.toFixed(0)} €</div>
       </div>`;
   }).join('');
+}
+
+function resetProvince() {
+  selectedProvince = null;
+  document.getElementById('selected-label').textContent = 'Ninguna';
+  document.getElementById('province-detail').innerHTML = DETAIL_PLACEHOLDER;
+  document.getElementById('chart-title').textContent = 'Pensión media por tipo — Selecciona una provincia';
+  document.getElementById('chart-subtitle').textContent = 'Haz clic en cualquier provincia del mapa';
+  barChart.data.datasets[0].data = [0, 0, 0, 0, 0];
+  barChart.update();
+  buildRanking();
+  updateEvolution();
+}
+const DETAIL_PLACEHOLDER = document.getElementById('province-detail').innerHTML;
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const MESES_LARGOS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function periodShort(p) { const [y, m] = p.split('-'); return `${MESES[+m - 1]} ${y}`; }
+function periodLong(p)  { const [y, m] = p.split('-'); return `${MESES_LARGOS[+m - 1]} de ${y}`; }
+function pctSigned(v) { return (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(1).replace('.', ',') + ' %'; }
+function pct1(v) { return (v * 100).toFixed(1).replace('.', ',') + ' %'; }
+// es-ES no separa los miles en números de 4 cifras (1376); aquí sí (1.376)
+function grp(v) { return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function eur0(v) { return grp(v) + ' €'; }
+const CHART_FONT = { family: "'DM Sans', sans-serif", size: 11 };
+
+// ─── EVOLUCIÓN (nominal y real) ──────────────────────────────────────────────
+let HIST = null, evoChart = null;
+
+async function loadEvolution() {
+  try {
+    const res = await fetch('data/historico.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    HIST = await res.json();
+  } catch (err) {
+    console.error('No se pudo cargar el histórico:', err);
+    document.getElementById('evo-subtitle').textContent = 'No se pudo cargar el histórico.';
+    return;
+  }
+  evoChart = new Chart(document.getElementById('evoChart'), {
+    type: 'line',
+    data: { labels: HIST.periodos.map(periodShort), datasets: [
+      { label: 'Nominal', data: [], borderColor: '#c84b31', backgroundColor: '#c84b31', borderWidth: 2, pointRadius: 0, tension: 0.15 },
+      { label: 'Real (euros de hoy)', data: [], borderColor: '#2d7a5a', backgroundColor: '#2d7a5a', borderWidth: 2, borderDash: [6, 4], pointRadius: 0, tension: 0.15 },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', align: 'start', labels: { font: CHART_FONT, color: '#6b6560', boxWidth: 18, boxHeight: 2 } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw != null ? c.raw.toFixed(2).replace('.', ',') + ' €' : '—'}` } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: CHART_FONT, color: '#a09a94', maxTicksLimit: 9, maxRotation: 0 } },
+        y: { grid: { color: '#f0ece6' }, ticks: { font: CHART_FONT, color: '#a09a94', callback: v => v.toLocaleString('es-ES') + ' €' } },
+      },
+    },
+  });
+  updateEvolution();
+}
+
+function updateEvolution() {
+  if (!HIST || !evoChart) return;
+  const type = currentType.replace('_media', '');
+  const code = selectedProvince ? Object.keys(CODE_TO_NAME).find(c => CODE_TO_NAME[c] === selectedProvince) : null;
+  const media = (code ? HIST.provincias[code] : HIST.nacional)[type].media;
+  const ipc = HIST.ipc.valores;
+
+  // Euros reales: se expresan en euros del último mes con IPC disponible
+  let base = ipc.length - 1;
+  while (base > 0 && ipc[base] == null) base--;
+  const real = media.map((v, i) => (v != null && ipc[i] != null) ? +(v * ipc[base] / ipc[i]).toFixed(2) : null);
+
+  evoChart.data.datasets[0].data = media;
+  evoChart.data.datasets[1].data = real;
+  evoChart.update();
+
+  const where = selectedProvince || 'España';
+  document.getElementById('evo-title').textContent = `Pensión media · ${TYPE_META[currentType].label} · ${where}`;
+  document.getElementById('evo-reset').style.display = selectedProvince ? '' : 'none';
+  const P = HIST.periodos;
+  const first = media.findIndex(v => v != null);
+  let last = media.length - 1;
+  while (last > 0 && media[last] == null) last--;
+  document.getElementById('evo-subtitle').textContent =
+    `${periodShort(P[first])} – ${periodShort(P[last])} · € al mes · real en euros de ${periodLong(P[base])}`;
+
+  const chips = [];
+  const chg = (a, b) => (a != null && b != null && a > 0) ? b / a - 1 : null;
+  const chip = (label, v) => v == null ? '' :
+    `<span class="chip">${label}: <strong class="${v >= 0 ? 'up' : 'down'}">${pctSigned(v)}</strong></span>`;
+  chips.push(`<span class="chip">Hoy: <strong>${eur0(media[last])}</strong> al mes</span>`);
+  chips.push(chip(`Nominal desde ${P[first].slice(0, 4)}`, chg(media[first], media[last])));
+  chips.push(chip(`Real desde ${P[first].slice(0, 4)}`, chg(real[first], real[last])));
+  const yAgo = last - 12;
+  if (yAgo >= 0) {
+    chips.push(chip('Nominal último año', chg(media[yAgo], media[last])));
+    chips.push(chip('Real último año', chg(real[yAgo], real[last])));
+  }
+  document.getElementById('evo-chips').innerHTML = chips.join('');
+
+  document.getElementById('evo-note').innerHTML =
+    `Fuente: <a href="${HIST.fuente.url}" target="_blank" rel="noopener">${HIST.fuente.nombre}</a>, pensiones contributivas en vigor ` +
+    `a día 1 de cada mes (total sistema). Valores reales: pensión media deflactada con el ` +
+    `<a href="${HIST.ipc.url}" target="_blank" rel="noopener">${HIST.ipc.nombre}</a> (${HIST.ipc.fuente}) del mismo mes, ` +
+    `expresada en euros de ${periodLong(P[base])}. La media sube también porque las pensiones nuevas suelen ser ` +
+    `más altas que las de quienes dejan de cobrar: no equivale a la subida de una pensión concreta.`;
+}
+
+// ─── DESIGUALDAD ─────────────────────────────────────────────────────────────
+let INEQ = null;
+
+async function loadInequality() {
+  try {
+    const res = await fetch('data/desigualdad.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    INEQ = await res.json();
+  } catch (err) {
+    console.error('No se pudieron cargar los datos de desigualdad:', err);
+    document.getElementById('ineq-subtitle').textContent = 'No se pudieron cargar los datos.';
+    return;
+  }
+  const d = INEQ;
+  document.getElementById('ineq-gini').textContent = d.gini.toFixed(3).replace('.', ',');
+  document.getElementById('ineq-brecha').textContent = pct1(d.brecha_genero);
+  document.getElementById('ineq-brecha-sub').textContent =
+    `Mujeres ${eur0(d.importe_medio.mujeres)} · hombres ${eur0(d.importe_medio.hombres)} al mes`;
+  document.getElementById('ineq-min').textContent = pct1(d.minimos_pct.ambos);
+  document.getElementById('ineq-min-sub').textContent =
+    `Mujeres ${pct1(d.minimos_pct.mujeres)} · hombres ${pct1(d.minimos_pct.hombres)}`;
+  const m = d.mediana_tramo;
+  document.getElementById('ineq-mediana').textContent = `${grp(m.desde)}–${grp(m.hasta)} €`;
+  document.getElementById('ineq-subtitle').textContent =
+    `${fmtNum(d.pensionistas.ambos)} pensionistas · datos a ${fechaLarga(d.fecha_datos)}`;
+  document.getElementById('ineq-note').innerHTML =
+    `Fuente: <a href="${d.fuente.url}" target="_blank" rel="noopener">${d.fuente.nombre}</a>, fichero ${d.fuente.fichero} ` +
+    `(hojas «${d.fuente.hojas.join('» y «')}»). Tramos de 100 € salvo el primero; «Pensión máxima» agrupa a quienes ` +
+    `cobran justo la pensión máxima. El pico entre 850 y 1.000 € corresponde sobre todo a pensiones con complemento a mínimos. ` +
+    `El índice de Gini es aproximado: se calcula con el punto medio de cada tramo.`;
+
+  const T = d.tramos_100;
+  new Chart(document.getElementById('ineqChart'), {
+    type: 'bar',
+    data: { labels: T.map(t => t.etiqueta), datasets: [
+      { label: 'Mujeres', data: T.map(t => t.mujeres), backgroundColor: '#c84b31', borderRadius: 2 },
+      { label: 'Hombres', data: T.map(t => t.hombres), backgroundColor: '#e8a020', borderRadius: 2 },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', align: 'start', labels: { font: CHART_FONT, color: '#6b6560', boxWidth: 12 } },
+        tooltip: { callbacks: {
+          label: c => ` ${c.dataset.label}: ${fmtNum(c.raw)}`,
+          footer: items => 'Total: ' + fmtNum(items.reduce((s, i) => s + i.raw, 0)),
+        } },
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: CHART_FONT, color: '#a09a94', maxRotation: 60, autoSkip: true } },
+        y: { stacked: true, grid: { color: '#f0ece6' }, ticks: { font: CHART_FONT, color: '#a09a94',
+             callback: v => v >= 1e6 ? (v / 1e6).toLocaleString('es-ES') + ' M' : (v / 1e3).toLocaleString('es-ES') + ' mil' } },
+      },
+    },
+  });
 }
 </script>
 </body>
