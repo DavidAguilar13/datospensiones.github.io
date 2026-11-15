@@ -471,6 +471,21 @@
   }
   footer a { color: var(--accent); text-decoration: none; }
 
+  .hero-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .hero-nav a {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .hero-nav a:hover { border-color: var(--accent); color: var(--accent); }
+  /* que los anclajes no queden bajo la cabecera fija */
+  #map, #evolucion, #desigualdad { scroll-margin-top: 120px; }
+
   /* EVOLUCIÓN Y DESIGUALDAD */
   .wide-section {
     max-width: 1400px;
@@ -566,6 +581,11 @@
 <div class="hero">
   <div class="hero-title">¿Cuánto cobran<br>los pensionistas de tu provincia?</div>
   <div class="hero-subtitle">Análisis de las pensiones contributivas y no contributivas del sistema de la Seguridad Social en las 50 provincias y las 2 ciudades autónomas de España.</div>
+  <nav class="hero-nav">
+    <a href="#map">Mapa por provincias</a>
+    <a href="#evolucion">Evolución desde 2010 ↓</a>
+    <a href="#desigualdad">Desigualdad ↓</a>
+  </nav>
 </div>
 
 <div class="kpi-grid">
@@ -906,32 +926,25 @@ function renderMap(geojsonData) {
       const d = fd.d;
       const key = fd.key || feature.properties.name;
 
-      layer.on('mouseover', function(e) {
-        this.setStyle({ weight: 2.5, color: '#333', fillOpacity: 1 });
+      // Un único tooltip por provincia, gestionado por Leaflet: se muestra al
+      // entrar, sigue al cursor y se oculta al salir. El contenido se calcula
+      // cada vez, así refleja el tipo de pensión elegido.
+      layer.bindTooltip(() => {
         const val = d ? d[currentType] : null;
-        const numStr = d ? fmtNum(d.total_num) : '—';
-        L.tooltip({
-          permanent: false, sticky: true, className: 'leaflet-tooltip-custom',
-          offset: [12, 0]
-        })
-        .setContent(`
+        const num = d ? d[currentType.replace('_media', '_num')] : null;
+        return `
           <div class="tip-name">${key}</div>
           <div class="tip-val">${val ? val.toFixed(2).replace('.', ',') + ' €' : '—'}</div>
-          <div class="tip-sub">${TYPE_META[currentType].label} · ${numStr} pensionistas</div>
-        `)
-        .setLatLng(e.latlng)
-        .addTo(map);
-      });
+          <div class="tip-sub">${TYPE_META[currentType].label} · ${fmtNum(num)} pensiones</div>`;
+      }, { sticky: true, direction: 'right', offset: [12, 0], className: 'leaflet-tooltip-custom' });
 
-      layer.on('mousemove', e => {
-        map.eachLayer(l => { if (l.getTooltip) { const t = l.getTooltip(); if(t) t.setLatLng(e.latlng); }});
+      layer.on('mouseover', function() {
+        this.setStyle({ weight: 2.5, color: '#333', fillOpacity: 1 });
+        this.bringToFront();
       });
 
       layer.on('mouseout', function() {
-        this.setStyle({
-          weight: 1.2, color: '#fff', fillOpacity: 0.88
-        });
-        map.eachLayer(l => { if (l.getTooltip && l.getTooltip()) map.removeLayer(l); });
+        this.setStyle({ weight: 1.2, color: '#fff', fillOpacity: d ? 0.88 : 0.4 });
       });
 
       layer.on('click', () => {
