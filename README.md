@@ -98,7 +98,19 @@ Notas de método:
 - **Al lanzarlo a mano** también vuelve a publicar la web, aunque no haya datos nuevos.
 
 La web se publica con GitHub Pages en modo *GitHub Actions* (Settings → Pages → Source).
-Solo se publican `index.html`, `sobre.html` y `data/`.
+Solo se publican `index.html`, `sobre.html`, `data/` y `assets/`.
+
+## Seguridad y privacidad
+
+- **Sin dependencias externas en la web**: fuentes (`assets/fonts/`, licencia SIL OFL), Leaflet
+  1.9.4, Chart.js 4.4.0 y el script de GoatCounter están en `assets/`. Los ficheros de
+  Leaflet y Chart.js coinciden byte a byte (SHA-256) con los publicados en npm.
+- **Content-Security-Policy** en cada página: solo se ejecuta código de esta web y la única
+  conexión externa permitida es el contador de visitas (`davidaguilar.goatcounter.com`).
+- Los textos que vienen de los ficheros de datos se escapan antes de insertarlos en HTML.
+- **Visitas**: GoatCounter, anónimo y sin cookies (no hace falta banner de consentimiento).
+- **GitHub Actions**: permisos mínimos por job, acciones fijadas a un commit concreto y
+  dependencias de Python con versión fija. `defusedxml` protege la lectura de los Excel.
 
 ## Probar en local
 
