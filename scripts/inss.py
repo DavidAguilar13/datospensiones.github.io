@@ -89,6 +89,7 @@ ALIASES = {
     "madrid (com. de)": "28", "madrid (comunidad de)": "28", "comunidad de madrid": "28",
     "murcia (region de)": "30", "region de murcia": "30",
     "navarra (com. foral de)": "31", "navarra (comunidad foral de)": "31",
+    "navarra (c. foral de)": "31",
     "comunidad foral de navarra": "31",
     "asturias (principado de)": "33", "principado de asturias": "33",
     "palmas (las)": "35",
@@ -518,7 +519,115 @@ def parse_ptas(path: Path) -> dict:
         raise ValidationError("Tramos: no se encuentra la fila TOTAL")
 
     return {"fecha": fecha, "pensionistas": pensionistas, "importe_medio": importe,
-            "minimos": minimos, "minimos_pct": minimos_pct, "total_tramos": total, "tramos": tramos}
+            "minimos": minimos, "minimos_pct": minimos_pct, "total_tramos": total, "tramos": tramos,
+            "provincias": parse_ptas_provinces(wb)}
+
+
+PROV_BRACKET_SHEET = "Tramos"
+
+
+def parse_ptas_provinces(wb) -> dict:
+    """Hoja «Tramos»: pensionistas por provincia (ambos sexos) por debajo del SMI,
+    entre el SMI y la pensión máxima, y en la máxima o más.
+    Devuelve {'nacional': {...}, 'provincias': {código: {...}}}."""
+    if PROV_BRACKET_SHEET not in wb.sheetnames:
+        raise ValidationError(f"No existe la hoja «{PROV_BRACKET_SHEET}»")
+    rows = [list(r) for r in wb[PROV_BRACKET_SHEET].iter_rows(values_only=True)]
+    hdr = next((i for i, r in enumerate(rows[:8]) if r and any(c and "inferior al smi" in norm(c) for c in r)), None)
+    if hdr is None:
+        raise ValidationError("Tramos por provincia: no se encuentra la cabecera «inferior al SMI»")
+    keys = {"inferior al smi": "bajo_smi", "entre smi y pension maxima": "smi_a_maxima",
+            "en pension maxima o superior": "maxima"}
+    cols = {}
+    for j, c in enumerate(rows[hdr]):
+        for k, v in keys.items():
+            if c and k in norm(c) and v not in cols:  # las tres primeras son «ambos sexos»
+                cols[v] = j
+    if len(cols) != 3:
+        raise ValidationError(f"Tramos por provincia: columnas inesperadas: {rows[hdr]}")
+
+    def block(r):
+        vals = {k: r[j] for k, j in cols.items()}
+        if not all(isinstance(v, (int, float)) for v in vals.values()):
+            raise ValidationError(f"Tramos por provincia: valor no numérico en {r[0]}: {vals}")
+        tot = sum(vals.values())
+        return {**{k: int(v) for k, v in vals.items()}, "total": int(tot),
+                "bajo_smi_pct": round(vals["bajo_smi"] / tot, 4) if tot else None}
+
+    nacional, provs, unknown = None, {}, []
+    for r in rows[hdr + 1:]:
+        if not r or not isinstance(r[0], str) or not r[0].strip():
+            continue
+        key = norm(r[0])
+        if key == "total":
+            nacional = block(r)
+        elif key in NAME_TO_CODE:
+            provs[NAME_TO_CODE[key]] = block(r)
+        elif key in CCAA or key.startswith(("(", "*", "nota", "fuente")):
+            continue
+        else:
+            unknown.append(r[0])
+    if unknown:
+        raise ValidationError(f"Tramos por provincia: nombres desconocidos: {unknown}")
+    return {"nacional": nacional, "provincias": provs}
+
+
+# ─── Estadísticos de distribución a partir de tramos ───────────────────────────
+
+def distribution(tramos: list[dict], sex: str, n: int, mean: float) -> dict:
+    """Estadísticos de desigualdad para un sexo ('ambos', 'mujeres', 'hombres') con
+    datos agrupados en tramos. Dentro de cada tramo se supone reparto uniforme; el
+    tramo abierto se ajusta para que el importe total cuadre con el importe medio."""
+    counts = [t[sex] for t in tramos]
+    total_income = mean * n
+    mids = [(t["desde"] + t["hasta"]) / 2 for t in tramos[:-1]]
+    rest = total_income - sum(m * c for m, c in zip(mids, counts))
+    top = tramos[-1]
+    top_mean = rest / counts[-1] if counts[-1] else top["desde"]
+    if top_mean <= top["desde"]:
+        top_mean = top["desde"] * 1.1
+    mids.append(top_mean)
+
+    # Curva de Lorenz en los límites de cada tramo
+    lorenz = [(0.0, 0.0)]
+    cn = cy = 0.0
+    for m, c in zip(mids, counts):
+        cn += c
+        cy += m * c
+        lorenz.append((cn / n, cy / total_income))
+    gini = 1 - sum((x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in zip(lorenz, lorenz[1:]))
+
+    def lorenz_at(p: float) -> float:
+        for (x0, y0), (x1, y1) in zip(lorenz, lorenz[1:]):
+            if x1 >= p:
+                return y0 + (y1 - y0) * ((p - x0) / (x1 - x0) if x1 > x0 else 0)
+        return 1.0
+
+    def percentile(p: float) -> float | None:
+        acc = 0
+        for t, c in zip(tramos, counts):
+            if acc + c >= p * n:
+                if t["hasta"] is None:
+                    return None  # cae en el tramo abierto: no se puede estimar
+                return t["desde"] + (t["hasta"] - t["desde"]) * ((p * n - acc) / c if c else 0)
+            acc += c
+        return None
+
+    pct = {f"p{int(q * 100)}": percentile(q) for q in (0.1, 0.25, 0.5, 0.75, 0.9)}
+    pct = {k: round(v, 0) if v is not None else None for k, v in pct.items()}
+    bottom50 = lorenz_at(0.5)
+    top10 = 1 - lorenz_at(0.9)
+    s80s20 = (1 - lorenz_at(0.8)) / lorenz_at(0.2)
+    return {
+        "gini": round(gini, 3),
+        "percentiles": pct,
+        "p90_p10": round(pct["p90"] / pct["p10"], 2) if pct["p90"] and pct["p10"] else None,
+        "cuota_50_inferior": round(bottom50, 4),
+        "cuota_10_superior": round(top10, 4),
+        "s80_s20": round(s80s20, 2),
+        "media_tramo_abierto": round(top_mean, 2),
+        "lorenz": [[round(x, 4), round(y, 4)] for x, y in lorenz],
+    }
 
 
 def validate_ptas(p: dict) -> None:
@@ -546,6 +655,20 @@ def validate_ptas(p: dict) -> None:
         prev_hi = t["hasta"] or prev_hi
     if tr and tr[-1]["hasta"] is not None:
         errors.append("El último tramo debería ser abierto («Más de …»)")
+    pv = p.get("provincias") or {}
+    if pv:
+        missing = sorted(set(PROVINCES) - set(pv["provincias"]))
+        if missing:
+            errors.append("Tramos por provincia: faltan " + ", ".join(PROVINCES[c] for c in missing))
+        elif pv["nacional"]:
+            s = sum(b["total"] for b in pv["provincias"].values())
+            if s != pv["nacional"]["total"]:
+                errors.append(f"Tramos por provincia: la suma ({s}) no da el total ({pv['nacional']['total']})")
+        if pv["nacional"] and pv["nacional"]["total"] != p["pensionistas"]["ambos"]:
+            errors.append("Tramos por provincia: el total no coincide con el número de pensionistas")
+        for c, b in pv["provincias"].items():
+            if b["bajo_smi_pct"] is None or not 0.1 <= b["bajo_smi_pct"] <= 0.9:
+                errors.append(f"{PROVINCES[c]}: % bajo el SMI fuera de rango ({b['bajo_smi_pct']})")
     if errors:
         raise ValidationError("\n  - " + "\n  - ".join(errors))
 

@@ -97,6 +97,13 @@ def desigualdad_doc(p: dict, filename: str) -> dict:
         "tramos": [{k: t[k] for k in ("etiqueta", "desde", "hasta", "ambos", "mujeres", "hombres")}
                    for t in p["tramos"]],
         "tramos_100": inss.bins_100(p["tramos"]),
+        "por_sexo": {k: inss.distribution(p["tramos"], k, p["pensionistas"][k], p["importe_medio"][k])
+                     for k in sexes},
+        "smi": {
+            "nacional": p["provincias"]["nacional"],
+            "provincias": {c: {"nombre": inss.PROVINCES[c], **b}
+                           for c, b in sorted(p["provincias"]["provincias"].items())},
+        },
         "nota": "Pensionistas (personas), no pensiones. El importe de cada tramo es la suma de "
                 "las pensiones que cobra cada persona. El índice de Gini es aproximado: usa el "
                 "punto medio de cada tramo.",

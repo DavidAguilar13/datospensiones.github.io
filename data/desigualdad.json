@@ -672,5 +672,1049 @@
       "hombres": 138047
     }
   ],
+  "por_sexo": {
+    "ambos": {
+      "gini": 0.295,
+      "percentiles": {
+        "p10": 740.0,
+        "p25": 924.0,
+        "p50": 1261.0,
+        "p75": 1999.0,
+        "p90": 3045.0
+      },
+      "p90_p10": 4.11,
+      "cuota_50_inferior": 0.2898,
+      "cuota_10_superior": 0.2109,
+      "s80_s20": 4.38,
+      "media_tramo_abierto": 3695.57,
+      "lorenz": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0121,
+          0.001
+        ],
+        [
+          0.0258,
+          0.0035
+        ],
+        [
+          0.0299,
+          0.0043
+        ],
+        [
+          0.0339,
+          0.0053
+        ],
+        [
+          0.0387,
+          0.0067
+        ],
+        [
+          0.0438,
+          0.0082
+        ],
+        [
+          0.0504,
+          0.0105
+        ],
+        [
+          0.064,
+          0.0157
+        ],
+        [
+          0.0699,
+          0.0181
+        ],
+        [
+          0.0894,
+          0.0267
+        ],
+        [
+          0.1026,
+          0.033
+        ],
+        [
+          0.117,
+          0.0404
+        ],
+        [
+          0.1349,
+          0.0501
+        ],
+        [
+          0.2034,
+          0.0894
+        ],
+        [
+          0.302,
+          0.1494
+        ],
+        [
+          0.3551,
+          0.1834
+        ],
+        [
+          0.3975,
+          0.212
+        ],
+        [
+          0.4253,
+          0.2316
+        ],
+        [
+          0.4483,
+          0.2486
+        ],
+        [
+          0.4704,
+          0.2657
+        ],
+        [
+          0.4793,
+          0.2727
+        ],
+        [
+          0.4914,
+          0.2826
+        ],
+        [
+          0.5296,
+          0.3145
+        ],
+        [
+          0.5743,
+          0.3543
+        ],
+        [
+          0.6109,
+          0.3891
+        ],
+        [
+          0.6444,
+          0.4232
+        ],
+        [
+          0.6748,
+          0.4562
+        ],
+        [
+          0.702,
+          0.4875
+        ],
+        [
+          0.7276,
+          0.5186
+        ],
+        [
+          0.7503,
+          0.5477
+        ],
+        [
+          0.7708,
+          0.5753
+        ],
+        [
+          0.7906,
+          0.6032
+        ],
+        [
+          0.8082,
+          0.6292
+        ],
+        [
+          0.8232,
+          0.6525
+        ],
+        [
+          0.8369,
+          0.6745
+        ],
+        [
+          0.8496,
+          0.6958
+        ],
+        [
+          0.8617,
+          0.7168
+        ],
+        [
+          0.8736,
+          0.7384
+        ],
+        [
+          0.8849,
+          0.7595
+        ],
+        [
+          0.8953,
+          0.7797
+        ],
+        [
+          0.9057,
+          0.8006
+        ],
+        [
+          0.9176,
+          0.8251
+        ],
+        [
+          0.9335,
+          0.859
+        ],
+        [
+          0.9744,
+          0.9486
+        ],
+        [
+          0.975,
+          0.95
+        ],
+        [
+          1.0,
+          1.0106
+        ]
+      ]
+    },
+    "mujeres": {
+      "gini": 0.278,
+      "percentiles": {
+        "p10": 703.0,
+        "p25": 905.0,
+        "p50": 1044.0,
+        "p75": 1680.0,
+        "p90": 2545.0
+      },
+      "p90_p10": 3.62,
+      "cuota_50_inferior": 0.3084,
+      "cuota_10_superior": 0.2184,
+      "s80_s20": 3.94,
+      "media_tramo_abierto": 3695.57,
+      "lorenz": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0122,
+          0.0011
+        ],
+        [
+          0.0257,
+          0.0039
+        ],
+        [
+          0.03,
+          0.005
+        ],
+        [
+          0.0345,
+          0.0062
+        ],
+        [
+          0.0397,
+          0.0078
+        ],
+        [
+          0.0451,
+          0.0098
+        ],
+        [
+          0.0524,
+          0.0126
+        ],
+        [
+          0.0727,
+          0.0214
+        ],
+        [
+          0.0796,
+          0.0245
+        ],
+        [
+          0.099,
+          0.0343
+        ],
+        [
+          0.1155,
+          0.0432
+        ],
+        [
+          0.1321,
+          0.0528
+        ],
+        [
+          0.1515,
+          0.0648
+        ],
+        [
+          0.2371,
+          0.1207
+        ],
+        [
+          0.3778,
+          0.2177
+        ],
+        [
+          0.4516,
+          0.2714
+        ],
+        [
+          0.5061,
+          0.3131
+        ],
+        [
+          0.5383,
+          0.3389
+        ],
+        [
+          0.5622,
+          0.359
+        ],
+        [
+          0.5844,
+          0.3784
+        ],
+        [
+          0.5933,
+          0.3864
+        ],
+        [
+          0.6054,
+          0.3975
+        ],
+        [
+          0.6279,
+          0.4189
+        ],
+        [
+          0.6666,
+          0.458
+        ],
+        [
+          0.6998,
+          0.4938
+        ],
+        [
+          0.7293,
+          0.5279
+        ],
+        [
+          0.7553,
+          0.5599
+        ],
+        [
+          0.779,
+          0.5908
+        ],
+        [
+          0.8024,
+          0.6231
+        ],
+        [
+          0.8229,
+          0.653
+        ],
+        [
+          0.8409,
+          0.6804
+        ],
+        [
+          0.8584,
+          0.7086
+        ],
+        [
+          0.8742,
+          0.7351
+        ],
+        [
+          0.8864,
+          0.7564
+        ],
+        [
+          0.8961,
+          0.7743
+        ],
+        [
+          0.9048,
+          0.7907
+        ],
+        [
+          0.9126,
+          0.8061
+        ],
+        [
+          0.92,
+          0.8213
+        ],
+        [
+          0.9271,
+          0.8365
+        ],
+        [
+          0.9337,
+          0.8511
+        ],
+        [
+          0.9405,
+          0.8663
+        ],
+        [
+          0.9478,
+          0.8836
+        ],
+        [
+          0.9573,
+          0.9067
+        ],
+        [
+          0.9783,
+          0.9588
+        ],
+        [
+          0.9788,
+          0.9601
+        ],
+        [
+          1.0,
+          1.0185
+        ]
+      ]
+    },
+    "hombres": {
+      "gini": 0.293,
+      "percentiles": {
+        "p10": 792.0,
+        "p25": 985.0,
+        "p50": 1442.0,
+        "p75": 2340.0,
+        "p90": 3256.0
+      },
+      "p90_p10": 4.11,
+      "cuota_50_inferior": 0.2879,
+      "cuota_10_superior": 0.1969,
+      "s80_s20": 4.55,
+      "media_tramo_abierto": 3426.1,
+      "lorenz": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0121,
+          0.0009
+        ],
+        [
+          0.0259,
+          0.0031
+        ],
+        [
+          0.0298,
+          0.0039
+        ],
+        [
+          0.0334,
+          0.0047
+        ],
+        [
+          0.0377,
+          0.0057
+        ],
+        [
+          0.0425,
+          0.0071
+        ],
+        [
+          0.0484,
+          0.0089
+        ],
+        [
+          0.0554,
+          0.0112
+        ],
+        [
+          0.0604,
+          0.0131
+        ],
+        [
+          0.0799,
+          0.0208
+        ],
+        [
+          0.0899,
+          0.0251
+        ],
+        [
+          0.102,
+          0.0306
+        ],
+        [
+          0.1186,
+          0.0387
+        ],
+        [
+          0.17,
+          0.0651
+        ],
+        [
+          0.227,
+          0.0961
+        ],
+        [
+          0.2596,
+          0.1148
+        ],
+        [
+          0.2901,
+          0.1332
+        ],
+        [
+          0.3135,
+          0.1479
+        ],
+        [
+          0.3356,
+          0.1626
+        ],
+        [
+          0.3576,
+          0.1778
+        ],
+        [
+          0.3665,
+          0.1841
+        ],
+        [
+          0.3788,
+          0.193
+        ],
+        [
+          0.4323,
+          0.2332
+        ],
+        [
+          0.4831,
+          0.2734
+        ],
+        [
+          0.5229,
+          0.3074
+        ],
+        [
+          0.5604,
+          0.3416
+        ],
+        [
+          0.5952,
+          0.3753
+        ],
+        [
+          0.626,
+          0.407
+        ],
+        [
+          0.6537,
+          0.4372
+        ],
+        [
+          0.6785,
+          0.4656
+        ],
+        [
+          0.7016,
+          0.4934
+        ],
+        [
+          0.7235,
+          0.5211
+        ],
+        [
+          0.7429,
+          0.5467
+        ],
+        [
+          0.7608,
+          0.5714
+        ],
+        [
+          0.7783,
+          0.5967
+        ],
+        [
+          0.7951,
+          0.6219
+        ],
+        [
+          0.8113,
+          0.6472
+        ],
+        [
+          0.8277,
+          0.6737
+        ],
+        [
+          0.8431,
+          0.6994
+        ],
+        [
+          0.8573,
+          0.7242
+        ],
+        [
+          0.8714,
+          0.7493
+        ],
+        [
+          0.8876,
+          0.7794
+        ],
+        [
+          0.9098,
+          0.8219
+        ],
+        [
+          0.9705,
+          0.9406
+        ],
+        [
+          0.9713,
+          0.9421
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "smi": {
+    "nacional": {
+      "bajo_smi": 4579153,
+      "smi_a_maxima": 4730571,
+      "maxima": 244660,
+      "total": 9554384,
+      "bajo_smi_pct": 0.4793
+    },
+    "provincias": {
+      "01": {
+        "nombre": "Álava",
+        "bajo_smi": 23297,
+        "smi_a_maxima": 51558,
+        "maxima": 3191,
+        "total": 78046,
+        "bajo_smi_pct": 0.2985
+      },
+      "02": {
+        "nombre": "Albacete",
+        "bajo_smi": 40338,
+        "smi_a_maxima": 31256,
+        "maxima": 1437,
+        "total": 73031,
+        "bajo_smi_pct": 0.5523
+      },
+      "03": {
+        "nombre": "Alicante",
+        "bajo_smi": 185278,
+        "smi_a_maxima": 132842,
+        "maxima": 5189,
+        "total": 323309,
+        "bajo_smi_pct": 0.5731
+      },
+      "04": {
+        "nombre": "Almería",
+        "bajo_smi": 69846,
+        "smi_a_maxima": 40137,
+        "maxima": 1747,
+        "total": 111730,
+        "bajo_smi_pct": 0.6251
+      },
+      "05": {
+        "nombre": "Ávila",
+        "bajo_smi": 22069,
+        "smi_a_maxima": 15214,
+        "maxima": 591,
+        "total": 37874,
+        "bajo_smi_pct": 0.5827
+      },
+      "06": {
+        "nombre": "Badajoz",
+        "bajo_smi": 83514,
+        "smi_a_maxima": 52871,
+        "maxima": 1998,
+        "total": 138383,
+        "bajo_smi_pct": 0.6035
+      },
+      "07": {
+        "nombre": "Illes Balears",
+        "bajo_smi": 96292,
+        "smi_a_maxima": 93928,
+        "maxima": 3440,
+        "total": 193660,
+        "bajo_smi_pct": 0.4972
+      },
+      "08": {
+        "nombre": "Barcelona",
+        "bajo_smi": 473031,
+        "smi_a_maxima": 692791,
+        "maxima": 31814,
+        "total": 1197636,
+        "bajo_smi_pct": 0.395
+      },
+      "09": {
+        "nombre": "Burgos",
+        "bajo_smi": 36247,
+        "smi_a_maxima": 48106,
+        "maxima": 2542,
+        "total": 86895,
+        "bajo_smi_pct": 0.4171
+      },
+      "10": {
+        "nombre": "Cáceres",
+        "bajo_smi": 58225,
+        "smi_a_maxima": 34389,
+        "maxima": 1386,
+        "total": 94000,
+        "bajo_smi_pct": 0.6194
+      },
+      "11": {
+        "nombre": "Cádiz",
+        "bajo_smi": 115718,
+        "smi_a_maxima": 104925,
+        "maxima": 5431,
+        "total": 226074,
+        "bajo_smi_pct": 0.5119
+      },
+      "12": {
+        "nombre": "Castellón",
+        "bajo_smi": 67334,
+        "smi_a_maxima": 58061,
+        "maxima": 2243,
+        "total": 127638,
+        "bajo_smi_pct": 0.5275
+      },
+      "13": {
+        "nombre": "Ciudad Real",
+        "bajo_smi": 56379,
+        "smi_a_maxima": 45146,
+        "maxima": 1988,
+        "total": 103513,
+        "bajo_smi_pct": 0.5447
+      },
+      "14": {
+        "nombre": "Córdoba",
+        "bajo_smi": 100087,
+        "smi_a_maxima": 62956,
+        "maxima": 2832,
+        "total": 165875,
+        "bajo_smi_pct": 0.6034
+      },
+      "15": {
+        "nombre": "A Coruña",
+        "bajo_smi": 156343,
+        "smi_a_maxima": 118307,
+        "maxima": 6489,
+        "total": 281139,
+        "bajo_smi_pct": 0.5561
+      },
+      "16": {
+        "nombre": "Cuenca",
+        "bajo_smi": 25997,
+        "smi_a_maxima": 17310,
+        "maxima": 598,
+        "total": 43905,
+        "bajo_smi_pct": 0.5921
+      },
+      "17": {
+        "nombre": "Girona",
+        "bajo_smi": 71412,
+        "smi_a_maxima": 78067,
+        "maxima": 2978,
+        "total": 152457,
+        "bajo_smi_pct": 0.4684
+      },
+      "18": {
+        "nombre": "Granada",
+        "bajo_smi": 108934,
+        "smi_a_maxima": 72383,
+        "maxima": 3484,
+        "total": 184801,
+        "bajo_smi_pct": 0.5895
+      },
+      "19": {
+        "nombre": "Guadalajara",
+        "bajo_smi": 20345,
+        "smi_a_maxima": 24111,
+        "maxima": 1063,
+        "total": 45519,
+        "bajo_smi_pct": 0.447
+      },
+      "20": {
+        "nombre": "Gipuzkoa",
+        "bajo_smi": 55176,
+        "smi_a_maxima": 115882,
+        "maxima": 7069,
+        "total": 178127,
+        "bajo_smi_pct": 0.3098
+      },
+      "21": {
+        "nombre": "Huelva",
+        "bajo_smi": 55534,
+        "smi_a_maxima": 41630,
+        "maxima": 1835,
+        "total": 98999,
+        "bajo_smi_pct": 0.561
+      },
+      "22": {
+        "nombre": "Huesca",
+        "bajo_smi": 24835,
+        "smi_a_maxima": 25047,
+        "maxima": 926,
+        "total": 50808,
+        "bajo_smi_pct": 0.4888
+      },
+      "23": {
+        "nombre": "Jaén",
+        "bajo_smi": 87755,
+        "smi_a_maxima": 51127,
+        "maxima": 1874,
+        "total": 140756,
+        "bajo_smi_pct": 0.6235
+      },
+      "24": {
+        "nombre": "León",
+        "bajo_smi": 60931,
+        "smi_a_maxima": 61924,
+        "maxima": 3536,
+        "total": 126391,
+        "bajo_smi_pct": 0.4821
+      },
+      "25": {
+        "nombre": "Lleida",
+        "bajo_smi": 49828,
+        "smi_a_maxima": 41804,
+        "maxima": 1902,
+        "total": 93534,
+        "bajo_smi_pct": 0.5327
+      },
+      "26": {
+        "nombre": "La Rioja",
+        "bajo_smi": 32120,
+        "smi_a_maxima": 35878,
+        "maxima": 1393,
+        "total": 69391,
+        "bajo_smi_pct": 0.4629
+      },
+      "27": {
+        "nombre": "Lugo",
+        "bajo_smi": 61041,
+        "smi_a_maxima": 33657,
+        "maxima": 1561,
+        "total": 96259,
+        "bajo_smi_pct": 0.6341
+      },
+      "28": {
+        "nombre": "Madrid",
+        "bajo_smi": 457103,
+        "smi_a_maxima": 694592,
+        "maxima": 47228,
+        "total": 1198923,
+        "bajo_smi_pct": 0.3813
+      },
+      "29": {
+        "nombre": "Málaga",
+        "bajo_smi": 154779,
+        "smi_a_maxima": 117094,
+        "maxima": 5332,
+        "total": 277205,
+        "bajo_smi_pct": 0.5584
+      },
+      "30": {
+        "nombre": "Murcia",
+        "bajo_smi": 139962,
+        "smi_a_maxima": 103686,
+        "maxima": 5852,
+        "total": 249500,
+        "bajo_smi_pct": 0.561
+      },
+      "31": {
+        "nombre": "Navarra",
+        "bajo_smi": 49813,
+        "smi_a_maxima": 83442,
+        "maxima": 4312,
+        "total": 137567,
+        "bajo_smi_pct": 0.3621
+      },
+      "32": {
+        "nombre": "Ourense",
+        "bajo_smi": 64753,
+        "smi_a_maxima": 30859,
+        "maxima": 1295,
+        "total": 96907,
+        "bajo_smi_pct": 0.6682
+      },
+      "33": {
+        "nombre": "Asturias",
+        "bajo_smi": 103234,
+        "smi_a_maxima": 161980,
+        "maxima": 9467,
+        "total": 274681,
+        "bajo_smi_pct": 0.3758
+      },
+      "34": {
+        "nombre": "Palencia",
+        "bajo_smi": 19771,
+        "smi_a_maxima": 20644,
+        "maxima": 1117,
+        "total": 41532,
+        "bajo_smi_pct": 0.476
+      },
+      "35": {
+        "nombre": "Las Palmas",
+        "bajo_smi": 104386,
+        "smi_a_maxima": 81403,
+        "maxima": 3275,
+        "total": 189064,
+        "bajo_smi_pct": 0.5521
+      },
+      "36": {
+        "nombre": "Pontevedra",
+        "bajo_smi": 126055,
+        "smi_a_maxima": 98610,
+        "maxima": 4194,
+        "total": 228859,
+        "bajo_smi_pct": 0.5508
+      },
+      "37": {
+        "nombre": "Salamanca",
+        "bajo_smi": 42112,
+        "smi_a_maxima": 34456,
+        "maxima": 1781,
+        "total": 78349,
+        "bajo_smi_pct": 0.5375
+      },
+      "38": {
+        "nombre": "Santa Cruz de Tenerife",
+        "bajo_smi": 100080,
+        "smi_a_maxima": 66191,
+        "maxima": 2942,
+        "total": 169213,
+        "bajo_smi_pct": 0.5914
+      },
+      "39": {
+        "nombre": "Cantabria",
+        "bajo_smi": 58045,
+        "smi_a_maxima": 74489,
+        "maxima": 3777,
+        "total": 136311,
+        "bajo_smi_pct": 0.4258
+      },
+      "40": {
+        "nombre": "Segovia",
+        "bajo_smi": 17197,
+        "smi_a_maxima": 15792,
+        "maxima": 708,
+        "total": 33697,
+        "bajo_smi_pct": 0.5103
+      },
+      "41": {
+        "nombre": "Sevilla",
+        "bajo_smi": 209975,
+        "smi_a_maxima": 160175,
+        "maxima": 8299,
+        "total": 378449,
+        "bajo_smi_pct": 0.5548
+      },
+      "42": {
+        "nombre": "Soria",
+        "bajo_smi": 10062,
+        "smi_a_maxima": 10533,
+        "maxima": 480,
+        "total": 21075,
+        "bajo_smi_pct": 0.4774
+      },
+      "43": {
+        "nombre": "Tarragona",
+        "bajo_smi": 79530,
+        "smi_a_maxima": 83831,
+        "maxima": 4148,
+        "total": 167509,
+        "bajo_smi_pct": 0.4748
+      },
+      "44": {
+        "nombre": "Teruel",
+        "bajo_smi": 16457,
+        "smi_a_maxima": 15776,
+        "maxima": 805,
+        "total": 33038,
+        "bajo_smi_pct": 0.4981
+      },
+      "45": {
+        "nombre": "Toledo",
+        "bajo_smi": 66932,
+        "smi_a_maxima": 54841,
+        "maxima": 2051,
+        "total": 123824,
+        "bajo_smi_pct": 0.5405
+      },
+      "46": {
+        "nombre": "Valencia",
+        "bajo_smi": 266491,
+        "smi_a_maxima": 249799,
+        "maxima": 13135,
+        "total": 529425,
+        "bajo_smi_pct": 0.5034
+      },
+      "47": {
+        "nombre": "Valladolid",
+        "bajo_smi": 49471,
+        "smi_a_maxima": 65637,
+        "maxima": 3494,
+        "total": 118602,
+        "bajo_smi_pct": 0.4171
+      },
+      "48": {
+        "nombre": "Bizkaia",
+        "bajo_smi": 86707,
+        "smi_a_maxima": 179933,
+        "maxima": 12984,
+        "total": 279624,
+        "bajo_smi_pct": 0.3101
+      },
+      "49": {
+        "nombre": "Zamora",
+        "bajo_smi": 25817,
+        "smi_a_maxima": 17529,
+        "maxima": 632,
+        "total": 43978,
+        "bajo_smi_pct": 0.587
+      },
+      "50": {
+        "nombre": "Zaragoza",
+        "bajo_smi": 83455,
+        "smi_a_maxima": 119639,
+        "maxima": 6096,
+        "total": 209190,
+        "bajo_smi_pct": 0.3989
+      },
+      "51": {
+        "nombre": "Ceuta",
+        "bajo_smi": 4382,
+        "smi_a_maxima": 4462,
+        "maxima": 339,
+        "total": 9183,
+        "bajo_smi_pct": 0.4772
+      },
+      "52": {
+        "nombre": "Melilla",
+        "bajo_smi": 4678,
+        "smi_a_maxima": 3871,
+        "maxima": 380,
+        "total": 8929,
+        "bajo_smi_pct": 0.5239
+      }
+    }
+  },
   "nota": "Pensionistas (personas), no pensiones. El importe de cada tramo es la suma de las pensiones que cobra cada persona. El índice de Gini es aproximado: usa el punto medio de cada tramo."
 }

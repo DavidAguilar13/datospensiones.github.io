@@ -76,6 +76,11 @@ Notas de método:
   `IPC290751` del INE, índice general nacional).
 - **Gini**: aproximado con el punto medio de cada tramo; el tramo abierto («Más de …») se
   ajusta para que el importe total cuadre con el importe medio publicado.
+- **Percentiles** (P10…P90): interpolación lineal dentro del tramo, suponiendo reparto
+  uniforme. **Cuotas** (50 % inferior, 10 % superior) y **S80/S20**: sobre la curva de Lorenz
+  construida con los tramos. Todo se calcula por sexo.
+- **Por debajo del SMI**: hoja «Tramos» del PTAS (pensionistas cuya suma de pensiones es
+  inferior al salario mínimo vigente), por provincia.
 
 ## Probar en local
 
