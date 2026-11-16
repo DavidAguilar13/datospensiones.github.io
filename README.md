@@ -122,7 +122,7 @@ pensiones y Seguridad Social, Estado y deuda, demografía, y vivienda y desigual
    `scripts/radar/radar.py`, que compara con la semana anterior (`radar/estado.json`):
    operaciones del INE, series de Eurostat para España, déficit y deuda de las AAPP del
    Banco de España, disposiciones generales del BOE (filtradas por palabras clave) y
-   publicaciones de la AIReF. Escribe `radar/novedades.json` y abre un issue con la etiqueta
+   publicaciones de la AIReF, BBVA Research (España) y CaixaBank Research. Escribe `radar/novedades.json` y abre un issue con la etiqueta
    `radar`. Si una fuente falla, lo dice en el issue y sigue con las demás.
 2. **Interpretación (rutina de Claude)**: sigue `RADAR.md`. Comenta el issue (qué importa,
    por qué e ideas de post, sin cifras propias) y, si un dato encaja, abre como mucho un PR

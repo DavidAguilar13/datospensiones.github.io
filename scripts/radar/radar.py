@@ -13,11 +13,14 @@ Fuentes:
   - Eurostat: último periodo con dato para España
   - Banco de España: último trimestre de déficit y deuda de las AAPP (be1101.csv)
   - BOE: disposiciones generales (sección I) cuyo título toca los temas de David
-  - AIReF: publicaciones de su web (RSS)
+  - AIReF: publicaciones de su web (RSS; incluye informes, opiniones y documentos técnicos
+    de https://www.airef.es/es/publicaciones/)
+  - BBVA Research: publicaciones sobre España (https://www.bbvaresearch.com/geography/espana/)
+  - CaixaBank Research: publicaciones de su web (RSS), sin las fichas de otros países
 
 Uso:
     python scripts/radar/radar.py            # semana normal
-    python scripts/radar/radar.py --dias 7   # fuerza la ventana de días (BOE, AIReF, INE)
+    python scripts/radar/radar.py --dias 7   # fuerza la ventana de días (BOE, AIReF, BBVA, CaixaBank, INE)
 
 Códigos de salida: 0 bien; 2 si fallan TODAS las fuentes (si falla alguna, se avisa en
 novedades.json → «errores» y el resto sigue).
@@ -26,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import io
 import json
 import re
@@ -118,6 +122,20 @@ AIREF_CLAVES = {
     "demografia": ["demogr", "población", "envejec", "migra"],
     "vivienda": ["vivienda", "desigualdad", "renta"],
 }
+
+# Centros de estudios privados: mismas claves que la AIReF y alguna más propia de sus títulos
+ESTUDIOS_CLAVES = {
+    "pensiones": AIREF_CLAVES["pensiones"] + ["jubilaci", "afiliaci", "salari", "ahorro para la jubilaci"],
+    "estado": AIREF_CLAVES["estado"] + ["impuest", "fiscalidad", "empleo público"],
+    "demografia": AIREF_CLAVES["demografia"] + ["natalidad", "fecundidad", "inmigra", "regularizaci"],
+    "vivienda": AIREF_CLAVES["vivienda"] + ["alquiler", "inmobiliari", "pobreza", "hogares"],
+}
+
+BBVA_URL = "https://www.bbvaresearch.com/geography/espana/"  # últimas ~10 publicaciones sobre España
+BBVA_TARJETA = re.compile(r'data-fecha="(\d{4}-\d{2}-\d{2})"\s+data-permalink="([^"]+)"[\s\S]*?title="([^"]*)"')
+
+CAIXA_RSS = "https://www.caixabankresearch.com/es/rss.xml"
+CAIXA_EXCLUIR = ("/fichas-pais/",)  # fichas de otros países: no son de los temas de David
 
 
 # ─── Utilidades ────────────────────────────────────────────────────────────────
@@ -303,8 +321,43 @@ def radar_airef(desde: date, estado: dict) -> list[dict]:
     return nuevas
 
 
+def radar_bbva(desde: date, estado: dict) -> list[dict]:
+    """BBVA Research no tiene RSS: se leen las tarjetas de su página de publicaciones sobre España."""
+    r = inss.session().get(BBVA_URL, timeout=60)
+    r.raise_for_status()
+    tarjetas = BBVA_TARJETA.findall(r.text)
+    if not tarjetas:
+        raise RuntimeError("BBVA Research: la página ha cambiado y no se encuentran publicaciones")
+    nuevas = []
+    for fecha, url, titulo in tarjetas:
+        if date.fromisoformat(fecha) < desde:
+            continue
+        titulo = html.unescape(titulo).strip()
+        temas = temas_por_claves(titulo, ESTUDIOS_CLAVES) or ["otros"]
+        nuevas.append(novedad("BBVA Research", temas, titulo, url, fecha, id_=f"BBVA:{url}"))
+    return nuevas
+
+
+def radar_caixa(desde: date, estado: dict) -> list[dict]:
+    raiz = ElementTree.fromstring(inss.get_text(CAIXA_RSS).encode("utf-8"))
+    nuevas = []
+    for item in raiz.iter("item"):
+        url = (item.findtext("link") or "").strip()
+        if any(x in url for x in CAIXA_EXCLUIR):
+            continue
+        titulo = (item.findtext("title") or "").strip()
+        fecha = parsedate_to_datetime(item.findtext("pubDate")).astimezone(timezone.utc).date()
+        if fecha < desde:
+            continue
+        temas = temas_por_claves(titulo, ESTUDIOS_CLAVES) or ["otros"]
+        nuevas.append(novedad("CaixaBank Research", temas, titulo, url, fecha.isoformat(),
+                              id_=f"CaixaBank:{url}"))
+    return nuevas
+
+
 FUENTES = [("INE", radar_ine), ("Eurostat", radar_eurostat), ("Banco de España", radar_bde),
-           ("BOE", radar_boe), ("AIReF", radar_airef)]
+           ("BOE", radar_boe), ("AIReF", radar_airef), ("BBVA Research", radar_bbva),
+           ("CaixaBank Research", radar_caixa)]
 
 
 # ─── Salida ────────────────────────────────────────────────────────────────────
