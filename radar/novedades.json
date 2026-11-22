@@ -1,7 +1,7 @@
 {
- "generado": "2026-11-15T14:54:47+00:00",
+ "generado": "2026-11-22T14:15:59+00:00",
  "desde": "2026-11-16",
- "hasta": "2026-11-15",
+ "hasta": "2026-11-22",
  "primera_ejecucion": false,
  "temas": {
   "pensiones": "Pensiones y Seguridad Social",
@@ -10,8 +10,379 @@
   "vivienda": "Vivienda y desigualdad",
   "otros": "Otras publicaciones (sin palabra clave de tus temas)"
  },
- "novedades": [],
- "errores": [
-  "AIReF: SSLError: HTTPSConnectionPool(host='www.airef.es', port=443): Max retries exceeded with url: /es/feed/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1011)')))"
- ]
+ "novedades": [
+  {
+   "id": "BOE:BOE-A-2026-24292",
+   "fuente": "BOE",
+   "temas": [
+    "pensiones"
+   ],
+   "titulo": "Resolución de 18 de noviembre de 2026, del Congreso de los Diputados, por la que se ordena la publicación del Acuerdo de convalidación del Real Decreto-ley 31/2026, de 20 de octubre, para la mejora de la acción protectora de la Seguridad Social y de otras normas sociales.",
+   "detalle": "CORTES GENERALES",
+   "fecha": "2026-11-20",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24292",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24301",
+   "fuente": "BOE",
+   "temas": [
+    "pensiones"
+   ],
+   "titulo": "Real Decreto 1005/2026, de 18 de noviembre, por el que se regulan los términos y las condiciones de inclusión en el Régimen General de la Seguridad Social de los ministros de culto de la Iglesia Ortodoxa Rumana en España.",
+   "detalle": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+   "fecha": "2026-11-20",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24301",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24441",
+   "fuente": "BOE",
+   "temas": [
+    "pensiones"
+   ],
+   "titulo": "Resolución de 13 de noviembre de 2026, de la Tesorería General de la Seguridad Social, por la que se publica el fallo de la Sentencia de 1 de diciembre de 2025 del Juzgado Central de lo Contencioso-Administrativo n.º 6, relativa a la cuestión de ilegalidad número 1/2025, en relación con la Resolución de 26 de diciembre de 2014, por la que se autoriza la utilización de tarjetas, tanto de débito como de crédito, como medio de pago de las deudas con la Seguridad Social en vía voluntaria no ingresadas dentro del plazo reglamentario, de las deudas en vía ejecutiva y de las deudas que hayan sido objeto de reclamación de deuda.",
+   "detalle": "MINISTERIO DE INCLUSIÓN, SEGURIDAD SOCIAL Y MIGRACIONES",
+   "fecha": "2026-11-21",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24441",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24007",
+   "fuente": "BOE",
+   "temas": [
+    "estado"
+   ],
+   "titulo": "Ley 11/2026, de 9 de julio, de medidas fiscales, financieras, administrativas y del sector público.",
+   "detalle": "COMUNIDAD AUTÓNOMA DE CATALUÑA",
+   "fecha": "2026-11-17",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24007",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24119",
+   "fuente": "BOE",
+   "temas": [
+    "estado"
+   ],
+   "titulo": "Real Decreto-ley 37/2026, de 17 de noviembre, por el que se aprueban medidas urgentes en materia de retribuciones del personal al servicio del sector público.",
+   "detalle": "JEFATURA DEL ESTADO",
+   "fecha": "2026-11-18",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24119",
+   "en_analista": false
+  },
+  {
+   "id": "INE:EMN",
+   "fuente": "INE",
+   "temas": [
+    "demografia"
+   ],
+   "titulo": "Estimación Mensual de Nacimientos",
+   "detalle": "7 tabla(s) actualizada(s), p. ej.: Diferencia absoluta interanual de los nacimientos acumulados. Total nacional, CCAA y provincias",
+   "fecha": "2026-11-18",
+   "url": "https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177079&idp=1254735573002",
+   "en_analista": false
+  },
+  {
+   "id": "INE:MNPN",
+   "fuente": "INE",
+   "temas": [
+    "demografia"
+   ],
+   "titulo": "MNP Estadística de Nacimientos",
+   "detalle": "37 tabla(s) actualizada(s), p. ej.: Fenómenos demográficos por comunidades y ciudades autónomas y tipo de fenómeno demográfico",
+   "fecha": "2026-11-18",
+   "url": "https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736177007&idp=1254735573002",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24010",
+   "fuente": "BOE",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Corrección de errores del Decreto-ley 4/2026, de 28 de julio, de actuaciones urgentes en materia de urbanismo para la agilización de la aprobación del planeamiento y su ejecución para el impulso a la promoción de vivienda.",
+   "detalle": "COMUNIDAD AUTÓNOMA DE EXTREMADURA",
+   "fecha": "2026-11-17",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24010",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24120",
+   "fuente": "BOE",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Real Decreto-ley 38/2026, de 17 de noviembre, por el que se adoptan medidas relativas a los recursos de los sistemas de financiación territorial y medidas fiscales urgentes para evitar la tributación del salario mínimo interprofesional de 2027 en el Impuesto sobre la Renta de las Personas Físicas.",
+   "detalle": "JEFATURA DEL ESTADO",
+   "fecha": "2026-11-18",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24120",
+   "en_analista": false
+  },
+  {
+   "id": "BOE:BOE-A-2026-24189",
+   "fuente": "BOE",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Real Decreto 1013/2026, de 18 de noviembre, por el que se fija el salario mínimo interprofesional para 2027.",
+   "detalle": "MINISTERIO DE TRABAJO Y ECONOMÍA SOCIAL",
+   "fecha": "2026-11-19",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24189",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/resumen-ejecutivo-sector-inmobiliario-espanol-2027-ajuste-suave",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Resumen ejecutivo. El sector inmobiliario español en 2027: ajuste suave",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/resumen-ejecutivo-sector-inmobiliario-espanol-2027-ajuste-suave",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/sector-inmobiliario-espanol-entra-fase-mas-madura-del-ciclo",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "El sector inmobiliario español entra en una fase más madura del ciclo",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/sector-inmobiliario-espanol-entra-fase-mas-madura-del-ciclo",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/mercado-del-alquiler-espana-esfuerzo-cada-vez-mas-desigual",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "El mercado del alquiler en España: un esfuerzo cada vez más desigual",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/mercado-del-alquiler-espana-esfuerzo-cada-vez-mas-desigual",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/demanda-extranjera-vivienda-espana-moderacion-y-diversificacion",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "La demanda extranjera de vivienda en España: moderación y diversificación",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/demanda-extranjera-vivienda-espana-moderacion-y-diversificacion",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/vivienda-ue-ciclo-comun-tensiones-heterogeneas",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "La vivienda en la UE: un ciclo común, tensiones heterogéneas",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/vivienda-ue-ciclo-comun-tensiones-heterogeneas",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/box-experiencias-europeas-politica-vivienda",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "BOX. Experiencias europeas de política de vivienda",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/box-experiencias-europeas-politica-vivienda",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/centros-datos-nueva-frontera-inversion-inmobiliaria",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Centros de datos: la nueva frontera de la inversión inmobiliaria",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/analisis-sectorial/inmobiliario/centros-datos-nueva-frontera-inversion-inmobiliaria",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/inmobiliario/noviembre-2026/inmobiliario-ajuste-suave-del-mercado-inmobiliario-2027",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Inmobiliario. Ajuste suave del mercado inmobiliario en 2027",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/inmobiliario/noviembre-2026/inmobiliario-ajuste-suave-del-mercado-inmobiliario-2027",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/node/14800",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "vivienda"
+   ],
+   "titulo": "Infografía. 2026-2027: un ciclo inmobiliario más maduro, con una oferta que no alcanza a satisfacer a la demanda",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/node/14800",
+   "en_analista": false
+  },
+  {
+   "id": "AIReF:https://www.airef.es/es/divulgacion/como-pueden-afectar-las-inundaciones-a-las-cuentas-publicas/",
+   "fuente": "AIReF",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "¿Cómo pueden afectar las inundaciones a las cuentas públicas?",
+   "detalle": "",
+   "fecha": "2026-11-16",
+   "url": "https://www.airef.es/es/divulgacion/como-pueden-afectar-las-inundaciones-a-las-cuentas-publicas/",
+   "en_analista": false
+  },
+  {
+   "id": "BBVA:https://www.bbvaresearch.com/publicaciones/espana-la-inflacion-se-estabilizo-en-octubre-y-bajara-en-noviembre/",
+   "fuente": "BBVA Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "España | La inflación se estabilizó en octubre y bajará en noviembre",
+   "detalle": "",
+   "fecha": "2026-11-16",
+   "url": "https://www.bbvaresearch.com/publicaciones/espana-la-inflacion-se-estabilizo-en-octubre-y-bajara-en-noviembre/",
+   "en_analista": false
+  },
+  {
+   "id": "BBVA:https://www.bbvaresearch.com/publicaciones/espana-que-sectores-impulsan-o-lastran-a-la-productividad/",
+   "fuente": "BBVA Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "España | ¿Qué sectores impulsan o lastran a la productividad?",
+   "detalle": "",
+   "fecha": "2026-11-16",
+   "url": "https://www.bbvaresearch.com/publicaciones/espana-que-sectores-impulsan-o-lastran-a-la-productividad/",
+   "en_analista": false
+  },
+  {
+   "id": "BBVA:https://www.bbvaresearch.com/publicaciones/espana-situacion-consumo-noviembre-de-2026/",
+   "fuente": "BBVA Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "España | Situación Consumo. Noviembre de 2026",
+   "detalle": "",
+   "fecha": "2026-11-18",
+   "url": "https://www.bbvaresearch.com/publicaciones/espana-situacion-consumo-noviembre-de-2026/",
+   "en_analista": false
+  },
+  {
+   "id": "BBVA:https://www.bbvaresearch.com/publicaciones/espana-bbva-research-monitor-big-data-de-consumo19-nov/",
+   "fuente": "BBVA Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "España | BBVA Research Monitor Big Data de Consumo.19 Nov",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.bbvaresearch.com/publicaciones/espana-bbva-research-monitor-big-data-de-consumo19-nov/",
+   "en_analista": false
+  },
+  {
+   "id": "BBVA:https://www.bbvaresearch.com/publicaciones/global-regulacion-financiera-actualizacion-semanal-20-de-noviembre-2026/",
+   "fuente": "BBVA Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Global | Regulación Financiera: Actualización Semanal. 20 de noviembre 2026",
+   "detalle": "",
+   "fecha": "2026-11-20",
+   "url": "https://www.bbvaresearch.com/publicaciones/global-regulacion-financiera-actualizacion-semanal-20-de-noviembre-2026/",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/aragon",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Aragón",
+   "detalle": "",
+   "fecha": "2026-11-16",
+   "url": "https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/aragon",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/castilla-mancha",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Castilla-La Mancha",
+   "detalle": "",
+   "fecha": "2026-11-17",
+   "url": "https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/castilla-mancha",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/comunitat-valenciana",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Comunitat Valenciana",
+   "detalle": "",
+   "fecha": "2026-11-17",
+   "url": "https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/comunitat-valenciana",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/publicaciones/financial-markets-daily-report/18-noviembre-2026",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Financial Markets Daily Report",
+   "detalle": "",
+   "fecha": "2026-11-18",
+   "url": "https://www.caixabankresearch.com/es/publicaciones/financial-markets-daily-report/18-noviembre-2026",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/andalucia",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Andalucía",
+   "detalle": "",
+   "fecha": "2026-11-19",
+   "url": "https://www.caixabankresearch.com/es/publicaciones/fichas-comunidades-autonomas/andalucia",
+   "en_analista": false
+  },
+  {
+   "id": "CaixaBank:https://www.caixabankresearch.com/es/pulso-economico-semanal/semana-del-13-al-20-noviembre-2026",
+   "fuente": "CaixaBank Research",
+   "temas": [
+    "otros"
+   ],
+   "titulo": "Semana del 13 al 20 de noviembre de 2026",
+   "detalle": "",
+   "fecha": "2026-11-20",
+   "url": "https://www.caixabankresearch.com/es/pulso-economico-semanal/semana-del-13-al-20-noviembre-2026",
+   "en_analista": false
+  }
+ ],
+ "errores": []
 }
