@@ -42,6 +42,21 @@ SRC_IPC = "INE, IPC general"
 SRC_PTAS = "INSS, pensionistas por tramos de cuantía"
 BASE_YEAR = 2010
 
+BDE_CSV = "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be{}.csv"
+BDE_WEB = "https://www.bde.es/webbe/es/estadisticas/temas/administraciones-publicas.html"
+SRC_BDE = "Banco de España, Boletín Estadístico, cap. 11 (PDE, SEC 2010)"
+# (tabla, código de serie) → nombre interno. Valores en miles de euros salvo los «_pib».
+BDE_SERIES = {
+    ("1103", "DTNSEC2010_S00000_ASG"): "saldo",        # capacidad (+) / necesidad (-) de financiación, flujo trimestral
+    ("1106", "DTNPDE2010_P00000_PS_ASG"): "deuda",     # deuda PDE de la Seguridad Social, saldo a fin de trimestre
+    ("1106", "DTNPDE2010_A00030_AS_ASG"): "activos",   # activos financieros frente a otras AAPP
+    ("1106", "DTNPDE2010_P0000N_PS_ASG"): "neta",      # deuda neta de esos activos
+    ("1107", "DTNPDE2010_P0000P_PS_ASG"): "deuda_pib", # deuda PDE, % del PIB
+    ("1101", "DTNSEC2010_PIBPM"): "pib",               # PIB nominal, suma de 4 trimestres
+}
+TRIM_BDE = {"MAR": 1, "JUN": 2, "SEP": 3, "DIC": 4}
+DEUDA_SS_BASE = 2016  # último año antes de los préstamos anuales del Estado a la Seguridad Social
+
 TIPO_NOMBRE = {"total": "total del sistema", "jub": "jubilación", "ip": "incapacidad permanente",
                "viu": "viudedad", "orf": "orfandad", "fam": "favor de familiares"}
 
@@ -68,6 +83,177 @@ def fetch_wages() -> dict[str, float]:
         if not 1000 <= v <= 5000:
             raise inss.ValidationError(f"Salario fuera de rango en {k}: {v}")
     return dict(sorted(out.items()))
+
+
+def fetch_bde() -> dict[str, dict[str, float]]:
+    """{'2026-T2': {'deuda': miles €, …}, …} con las series de BDE_SERIES.
+
+    Validado: existen todas las series con su descripción esperada, hay bastantes
+    trimestres, los valores están en rango, la deuda no salta de forma absurda,
+    deuda neta = deuda − activos y el último dato no tiene más de un año.
+    """
+    import csv
+    import io
+
+    out: dict[str, dict[str, float]] = {}
+    for tabla in sorted({t for t, _ in BDE_SERIES}):
+        r = inss.session().get(BDE_CSV.format(tabla), timeout=60)
+        r.raise_for_status()
+        filas = list(csv.reader(io.StringIO(r.content.decode("latin-1"))))
+        cab = filas[0]
+        for (t, cod), nombre in BDE_SERIES.items():
+            if t != tabla:
+                continue
+            if cod not in cab:
+                raise inss.ValidationError(f"Banco de España be{tabla}: falta la serie {cod}")
+            j = cab.index(cod)
+            desc = filas[3][j]
+            if nombre != "pib" and "Seguridad Social" not in desc:
+                raise inss.ValidationError(f"be{tabla} {cod} ya no es de la Seguridad Social: {desc}")
+            for f in filas[6:]:
+                m = f and len(f) > j and f[0].strip().split(" ")
+                if not m or len(m) != 2 or m[0] not in TRIM_BDE or not m[1].isdigit():
+                    continue
+                v = f[j].strip()
+                if v in ("", "_"):
+                    continue
+                out.setdefault(f"{m[1]}-T{TRIM_BDE[m[0]]}", {})[nombre] = float(v)
+
+    completos = {p: d for p, d in sorted(out.items()) if len(d) == len(BDE_SERIES)}
+    if len(completos) < 80:
+        raise inss.ValidationError(f"Banco de España: pocos trimestres completos ({len(completos)})")
+    prev = None
+    for p, d in completos.items():
+        if not 0 <= d["deuda"] <= 500e6:
+            raise inss.ValidationError(f"Deuda de la Seguridad Social fuera de rango en {p}: {d['deuda']}")
+        if not 0 <= d["deuda_pib"] <= 30:
+            raise inss.ValidationError(f"Deuda de la Seguridad Social (% PIB) fuera de rango en {p}: {d['deuda_pib']}")
+        if not -40e6 <= d["saldo"] <= 40e6:
+            raise inss.ValidationError(f"Saldo trimestral de la Seguridad Social fuera de rango en {p}: {d['saldo']}")
+        if not 300e6 <= d["pib"] <= 5000e6:
+            raise inss.ValidationError(f"PIB fuera de rango en {p}: {d['pib']}")
+        if abs(d["deuda"] - d["activos"] - d["neta"]) > 0.01 * d["deuda"] + 1000:
+            raise inss.ValidationError(f"Deuda neta ≠ deuda − activos en {p}")
+        calc_pib = d["deuda"] / d["pib"] * 100
+        if abs(calc_pib - d["deuda_pib"]) > 0.3:
+            raise inss.ValidationError(f"Deuda/PIB no cuadra en {p}: {calc_pib:.1f} frente a {d['deuda_pib']}")
+        if prev and abs(d["deuda"] - completos[prev]["deuda"]) > 30e6:
+            raise inss.ValidationError(f"Salto de deuda absurdo entre {prev} y {p}")
+        prev = p
+    ultimo = list(completos)[-1]
+    if int(ultimo[:4]) < datetime.now(timezone.utc).year - 1:
+        raise inss.ValidationError(f"Banco de España: el último trimestre ({ultimo}) es demasiado antiguo")
+    return completos
+
+
+def mm(miles: float) -> float:
+    """miles de euros → miles de millones de euros, con un decimal."""
+    return round(miles / 1e6, 1)
+
+
+def trim_es(p: str) -> str:
+    """'2026-T2' → '2.º trimestre de 2026'"""
+    return f"{p[-1]}.º trimestre de {p[:4]}"
+
+
+# ─── Deuda y déficit de la Seguridad Social ────────────────────────────────────
+
+def tema_deuda_ss(bde: dict) -> tuple[dict, list[str]]:
+    P = list(bde)
+    ult = P[-1]
+    d_ult = bde[ult]
+    anyos = sorted({int(p[:4]) for p in P})
+    # años completos: los 4 trimestres (el saldo es un flujo trimestral; se suma por año)
+    completos = [y for y in anyos if all(f"{y}-T{q}" in bde for q in range(1, 5))]
+    anual = {}
+    for y in completos:
+        saldo = sum(bde[f"{y}-T{q}"]["saldo"] for q in range(1, 5))
+        dic = bde[f"{y}-T4"]
+        anual[y] = {"saldo": saldo, "saldo_pib": round(saldo / dic["pib"] * 100, 2),
+                    "deuda": dic["deuda"], "neta": dic["neta"], "deuda_pib": dic["deuda_pib"]}
+    y_fin = completos[-1]
+    if DEUDA_SS_BASE not in anual or BASE_YEAR not in anual:
+        raise inss.ValidationError("Banco de España: faltan años base para la deuda de la Seguridad Social")
+    for y, a in anual.items():
+        if not -5 <= a["saldo_pib"] <= 3:
+            raise inss.ValidationError(f"Saldo anual de la Seguridad Social fuera de rango en {y}: {a['saldo_pib']} % PIB")
+    desde = [y for y in completos if y >= BASE_YEAR]
+    con_deficit = [y for y in desde if anual[y]["saldo"] < 0]
+    acumulado = sum(anual[y]["saldo"] for y in desde)
+    base = anual[DEUDA_SS_BASE]
+
+    cifras = [
+        {"id": "deuda_ss_ultima", "texto": f"Deuda de la Seguridad Social ({trim_es(ult)})", "valor": mm(d_ult["deuda"]), "unidad": "miles de millones de €", "fuente": SRC_BDE},
+        {"id": "deuda_ss_pib_ultima", "texto": f"Deuda de la Seguridad Social en % del PIB ({trim_es(ult)})", "valor": d_ult["deuda_pib"], "unidad": "% del PIB", "fuente": SRC_BDE},
+        {"id": "deuda_ss_base", "texto": f"Deuda de la Seguridad Social a final de {DEUDA_SS_BASE}", "valor": mm(base["deuda"]), "unidad": "miles de millones de €", "fuente": SRC_BDE},
+        {"id": "deuda_ss_veces_base", "texto": f"Veces que se ha multiplicado la deuda de la Seguridad Social desde final de {DEUDA_SS_BASE} ({trim_es(ult)})", "valor": round(d_ult["deuda"] / base["deuda"], 1), "unidad": "veces", "fuente": f"{SRC_BDE}; cálculo propio"},
+        {"id": "deuda_ss_neta_ultima", "texto": f"Deuda de la Seguridad Social neta de sus activos frente a otras AAPP ({trim_es(ult)})", "valor": mm(d_ult["neta"]), "unidad": "miles de millones de €", "fuente": SRC_BDE},
+        {"id": "activos_ss_ultimo", "texto": f"Activos financieros de la Seguridad Social frente a otras AAPP ({trim_es(ult)})", "valor": mm(d_ult["activos"]), "unidad": "miles de millones de €", "fuente": SRC_BDE},
+        {"id": "saldo_ss_ultimo_anyo", "texto": f"Saldo de la Seguridad Social en {y_fin} (negativo = déficit)", "valor": mm(anual[y_fin]["saldo"]), "unidad": "miles de millones de €", "fuente": f"{SRC_BDE}; suma de los 4 trimestres"},
+        {"id": "saldo_ss_pib_ultimo_anyo", "texto": f"Saldo de la Seguridad Social en {y_fin}, % del PIB (negativo = déficit)", "valor": round(anual[y_fin]["saldo_pib"], 1), "unidad": "% del PIB", "fuente": f"{SRC_BDE}; cálculo propio"},
+        {"id": "anyos_deficit_ss", "texto": f"Años con déficit de la Seguridad Social entre {desde[0]} y {y_fin}", "valor": len(con_deficit), "unidad": f"de {len(desde)}", "detalle": con_deficit, "fuente": SRC_BDE},
+        {"id": "saldo_ss_acumulado", "texto": f"Saldo acumulado de la Seguridad Social {desde[0]}–{y_fin} (negativo = déficit)", "valor": mm(acumulado), "unidad": "miles de millones de €", "fuente": f"{SRC_BDE}; cálculo propio"},
+    ]
+
+    # Gráfico 1: deuda bruta y neta a fin de año (y el último trimestre si el año no está cerrado)
+    g1 = GRAF / "seguridad_social_deuda.png"
+    puntos = [(str(y), anual[y]) for y in range(2007, y_fin + 1) if y in anual]
+    if ult != f"{y_fin}-T4":
+        puntos.append((f"{ult[-2:]} {ult[:4]}", {"deuda": d_ult["deuda"], "neta": d_ult["neta"]}))
+    xs = list(range(len(puntos)))
+    bruta = [mm(a["deuda"]) for _, a in puntos]
+    neta = [mm(a["neta"]) for _, a in puntos]
+    fig, ax = estilo.figura(f"Deuda de la Seguridad Social (miles de millones de €). España {puntos[0][0]}-{puntos[-1][0][-4:]}")
+    ax.bar(xs, bruta, color=[AZUL] * (len(xs) - 1) + [ROJO], width=0.65, label="Deuda (PDE)")
+    ax.plot(xs, neta, color=NARANJA, lw=2.6, marker="o", ms=5, label="Deuda neta de activos frente a otras AAPP")
+    for x, v in zip(xs, bruta):
+        ax.text(x, v + max(bruta) * 0.015, num_es(v, 0), ha="center", fontsize=10.5)
+    ax.axhline(0, color="#7F7F7F", lw=1)
+    ax.set_xticks(xs, [e for e, _ in puntos], rotation=45, ha="right")
+    ax.grid(axis="x", visible=False)
+    estilo.eje_es(ax, 0)
+    ax.legend(loc="upper left")
+    estilo.guardar(fig, g1, f"{SRC_BDE}, tabla 11.6. Datos a 31 de diciembre de cada año"
+                   + (f" y al {trim_es(ult)}" if ult != f"{y_fin}-T4" else ""))
+
+    # Gráfico 2: saldo anual en % del PIB
+    g2 = GRAF / "seguridad_social_deficit_pib.png"
+    ys_ = [y for y in completos if y >= 2007]
+    vs = [round(anual[y]["saldo_pib"], 1) for y in ys_]
+    fig, ax = estilo.figura(f"Saldo de la Seguridad Social (% del PIB; negativo = déficit). España {ys_[0]}-{ys_[-1]}")
+    ax.bar(ys_, vs, color=[VERDE if v >= 0 else ROJO for v in vs], width=0.65)
+    for x, v in zip(ys_, vs):
+        ax.text(x, v + (0.04 if v >= 0 else -0.04), num_es(v, 1), ha="center", va="bottom" if v >= 0 else "top", fontsize=10.5)
+    ax.axhline(0, color="#7F7F7F", lw=1)
+    ax.set_xticks(ys_)
+    ax.tick_params(axis="x", rotation=45)
+    ax.set_ylim(min(vs) * 1.25 if min(vs) < 0 else -0.2, max(max(vs) * 1.4, 0.3))
+    estilo.eje_es(ax, 1, " %")
+    estilo.guardar(fig, g2, f"{SRC_BDE}, tablas 11.3 y 11.1 (PIB). Suma de los 4 trimestres de cada año")
+
+    return {
+        "id": "deuda_seguridad_social",
+        "titulo": "Deuda y déficit de la Seguridad Social",
+        "pregunta": "¿Se están pagando las pensiones con deuda?",
+        "cifras": cifras,
+        "serie_anual": [{"anyo": y, "deuda_mm": mm(a["deuda"]), "deuda_neta_mm": mm(a["neta"]),
+                         "deuda_pib": a["deuda_pib"], "saldo_mm": mm(a["saldo"]),
+                         "saldo_pib": round(a["saldo_pib"], 1)} for y, a in anual.items() if y >= 2007],
+        "graficos": [g1.name, g2.name],
+        "advertencias": [
+            "La deuda de la Seguridad Social es, sobre todo, préstamos del Estado. En la deuda pública total de España (la que se compara con la UE) se consolida: no se suma otra vez.",
+            "La deuda neta resta lo que la Seguridad Social tiene invertido en deuda de otras Administraciones (como el Fondo de Reserva). Por eso fue negativa durante años: tenía más activos que deudas.",
+            "El saldo es el de contabilidad nacional (SEC 2010): las transferencias del Estado cuentan como ingresos. No mide cuánto del gasto en pensiones no cubren las cotizaciones; eso es otro dato que el analista todavía no tiene.",
+            "El saldo trimestral tiene mucha estacionalidad (pagas extra), por eso solo se usan años completos.",
+            "Datos del Protocolo de Déficit Excesivo; el Banco de España los revisa a veces hacia atrás.",
+        ],
+        "fuentes": [
+            {"nombre": f"{SRC_BDE}, tabla 11.6 (deuda por subsectores)", "url": BDE_CSV.format("1106")},
+            {"nombre": f"{SRC_BDE}, tabla 11.7 (deuda en % del PIB)", "url": BDE_CSV.format("1107")},
+            {"nombre": f"{SRC_BDE}, tabla 11.3 (capacidad o necesidad de financiación)", "url": BDE_CSV.format("1103")},
+            {"nombre": "Banco de España, estadísticas de Administraciones Públicas", "url": BDE_WEB},
+        ],
+    }, [g1.name, g2.name]
 
 
 # ─── Pensiones frente a salarios reales ────────────────────────────────────────
@@ -307,8 +493,19 @@ def main() -> int:
         print(f"ERROR al obtener los salarios del INE: {e}", file=sys.stderr)
         return 2
 
+    # La deuda de la Seguridad Social es un tema más: si el Banco de España falla, se avisa
+    # en hallazgos.json («temas_sin_datos») y el resto del analista sigue.
+    calculos = [(tema_novedades, (hist,)), (tema_salarios, (hist, wages)), (tema_desigualdad, (desi,))]
+    sin_datos, bde = [], None
+    try:
+        bde = fetch_bde()
+        calculos.append((tema_deuda_ss, (bde,)))
+    except Exception as e:
+        print(f"AVISO: sin datos del Banco de España, se omite la deuda de la Seguridad Social: {e}", file=sys.stderr)
+        sin_datos.append({"id": "deuda_seguridad_social", "motivo": f"{type(e).__name__}: {e}"[:300]})
+
     temas, graficos = [], []
-    for fn, args in ((tema_novedades, (hist,)), (tema_salarios, (hist, wages)), (tema_desigualdad, (desi,))):
+    for fn, args in calculos:
         t, g = fn(*args)
         temas.append(t)
         graficos += g
@@ -321,9 +518,11 @@ def main() -> int:
     doc = {
         "generado": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
         "datos": {"pensiones": pens["periodo"], "pensionistas": desi["periodo"],
-                  "salarios_ultimo_trimestre": list(wages)[-1]},
+                  "salarios_ultimo_trimestre": list(wages)[-1],
+                  "seguridad_social_ultimo_trimestre": list(bde)[-1] if bde else None},
         "web": "https://davidaguilar13.github.io/datospensiones.github.io/",
         "temas": temas,
+        "temas_sin_datos": sin_datos,
     }
     (OUT / "hallazgos.json").write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Escrito analisis/hallazgos.json: {len(temas)} temas, {sum(len(t['cifras']) for t in temas)} cifras, "

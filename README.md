@@ -105,8 +105,10 @@ Solo se publican `index.html`, `sobre.html`, `data/` y `assets/`.
 Cada lunes se prepara un borrador de post para Substack y un hilo para X:
 
 1. **Datos y gráficos (código, sin IA)**: `.github/workflows/analista-datos.yml` (domingo 13:47 UTC, un día antes de la rutina para absorber los retrasos de GitHub)
-   ejecuta `scripts/analista/hallazgos.py`, que calcula las cifras a partir de `data/` y de la
-   serie de salarios del INE (ETCL, coste salarial total por trabajador y mes) y genera los
+   ejecuta `scripts/analista/hallazgos.py`, que calcula las cifras a partir de `data/`, de la
+   serie de salarios del INE (ETCL, coste salarial total por trabajador y mes) y de la deuda y el
+   déficit de la Seguridad Social del Banco de España (tablas 11.1, 11.3, 11.6 y 11.7, con sus
+   comprobaciones; si el Banco de España falla, ese tema se omite y se anota en `temas_sin_datos`) y genera los
    gráficos con el estilo de David (`scripts/analista/estilo.py`). Resultado en `analisis/`
    (no se publica en la web).
 2. **Redacción (rutina de Claude)**: sigue `ANALISTA.md`. Solo puede usar las cifras de
