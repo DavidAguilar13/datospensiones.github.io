@@ -16,7 +16,7 @@ David los revisa, añade su opinión y los publica él. **Tú nunca publicas nad
   `fuentes` del tema, con su URL).
 - Incluye **siempre** las advertencias del tema (`advertencias`) que afecten a lo que dices.
   Por ejemplo: la pensión media no es la revalorización (efecto sustitución); pensiones ≠ pensionistas.
-- Si `analisis/hallazgos.json` no existe o su campo `generado` tiene más de 8 días, **no escribas
+- Si `analisis/hallazgos.json` no existe o su campo `generado` tiene más de 3 días, **no escribas
   ningún borrador**: abre un issue titulado «Analista: no hay hallazgos recientes» y termina.
 
 ## Qué tienes que producir

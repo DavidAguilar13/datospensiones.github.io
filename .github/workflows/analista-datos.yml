@@ -9,7 +9,9 @@ name: Analista - preparar datos y gráficos
 
 on:
   schedule:
-    - cron: "0 5 * * 1"   # lunes 5:00 UTC, antes de que la rutina de Claude redacte el borrador
+    # Domingo 13:47 UTC: un día de margen antes de la rutina de Claude (lunes 7:00 UTC), porque
+    # GitHub retrasa a veces los cron varias horas (el 23-11-2026 arrancó a las 15:29).
+    - cron: "47 13 * * 0"
   workflow_dispatch:
 
 permissions:

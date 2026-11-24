@@ -19,8 +19,13 @@ David decide. **Tú nunca publicas, fusionas ni cierras nada.**
 
 ## Paso 1: comentar el issue de la semana
 
-Busca el issue abierto con la etiqueta `radar` cuyo título lleva la fecha de hoy
-(`Radar semanal AAAA-MM-DD: …`). Si no lo hay (semana sin novedades), termina.
+Busca el issue abierto **más reciente** con la etiqueta `radar` (`Radar semanal AAAA-MM-DD: …`).
+El código lo abre el sábado, un día antes que tú, así que la fecha del título no será la de hoy.
+Termina sin hacer nada si no lo hay, si se creó hace más de 2 días (semana sin novedades) o si
+ya tiene un comentario tuyo de esta semana.
+
+Cada novedad agrupada puede traer `relacionadas` (otras piezas del mismo informe): trátalas
+como una sola. El recuento de `descartadas` es ruido ya filtrado por el código: no lo comentes.
 
 Escribe **un solo comentario** con:
 
