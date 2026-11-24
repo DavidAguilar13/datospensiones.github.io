@@ -1,4 +1,4 @@
-# Radar de datos: cada domingo mira qué han publicado INE, Eurostat, Banco de España,
+# Radar de datos: cada sábado mira qué han publicado INE, Eurostat, Banco de España,
 # BOE, AIReF, BBVA Research y CaixaBank Research sobre los temas de David y abre un issue con las novedades (etiqueta «radar»).
 # Todo lo hace código (scripts/radar/radar.py); aquí no interviene ninguna IA.
 # Después, la rutina de Claude del radar comenta el issue y, si un dato encaja, propone
@@ -8,7 +8,10 @@ name: Radar de datos
 
 on:
   schedule:
-    - cron: "0 6 * * 0"   # domingo 6:00 UTC, antes de la rutina de Claude (8:00 UTC)
+    # Sábado 13:17 UTC: GitHub retrasa a veces los cron varias horas (el 22-11-2026 arrancó
+    # con 8 h de retraso y la rutina de Claude del domingo, 8:00 UTC, no encontró el issue).
+    # Con un día de margen el issue siempre está listo. Minuto 17: las horas en punto van más cargadas.
+    - cron: "17 13 * * 6"
   workflow_dispatch:
 
 permissions:

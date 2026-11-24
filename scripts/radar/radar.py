@@ -137,6 +137,47 @@ BBVA_TARJETA = re.compile(r'data-fecha="(\d{4}-\d{2}-\d{2})"\s+data-permalink="(
 CAIXA_RSS = "https://www.caixabankresearch.com/es/rss.xml"
 CAIXA_EXCLUIR = ("/fichas-pais/",)  # fichas de otros países: no son de los temas de David
 
+# ─── Filtro de ruido ───────────────────────────────────────────────────────────
+# El BOE publica en la sección I normas autonómicas y trámites que no aportan nada nuevo:
+BOE_DEPARTAMENTOS_EXCLUIR = ("COMUNIDAD AUTÓNOMA", "COMUNITAT", "COMUNIDAD FORAL",
+                             "CIUDAD AUTÓNOMA", "ILLES BALEARS")
+BOE_TITULOS_EXCLUIR = ("corrección de errores", "se publica el fallo de la sentencia")
+# Fuentes que publican un informe en varias piezas el mismo día: se agrupan en una novedad
+FUENTES_AGRUPAR = ("CaixaBank Research", "BBVA Research", "AIReF")
+
+
+def limpiar(novedades: list[dict]) -> tuple[list[dict], dict[str, int]]:
+    """Quita el ruido del listado y cuenta lo descartado por fuente.
+
+    - Publicaciones sin palabra clave de los temas de David (tema «otros»): solo se cuentan.
+    - BOE: normas autonómicas, correcciones de errores y fallos de sentencias.
+    - Varias piezas de la misma fuente, el mismo día y del mismo tema: una sola novedad,
+      con las demás en «relacionadas».
+    """
+    descartadas: dict[str, int] = {}
+    quedan, grupos = [], {}
+    for n in novedades:
+        t = n["titulo"].lower()
+        ruido = (n["temas"][0] == "otros"
+                 or (n["fuente"] == "BOE"
+                     and (n["detalle"].upper().startswith(BOE_DEPARTAMENTOS_EXCLUIR)
+                          or any(x in t for x in BOE_TITULOS_EXCLUIR))))
+        if ruido:
+            descartadas[n["fuente"]] = descartadas.get(n["fuente"], 0) + 1
+            continue
+        if n["fuente"] in FUENTES_AGRUPAR:
+            clave = (n["fuente"], n["fecha"], n["temas"][0])
+            if clave in grupos:
+                g = grupos[clave]
+                g.setdefault("relacionadas", []).append({"titulo": n["titulo"], "url": n["url"]})
+                g["temas"] += [x for x in n["temas"] if x not in g["temas"]]
+                g["detalle"] = f"Informe en varias piezas: {len(g['relacionadas']) + 1} publicadas ese día"
+                continue
+            n = dict(n)
+            grupos[clave] = n
+        quedan.append(n)
+    return quedan, descartadas
+
 
 # ─── Utilidades ────────────────────────────────────────────────────────────────
 
@@ -382,6 +423,10 @@ def markdown(res: dict) -> str:
         l.append("")
     if not res["novedades"]:
         l += ["Sin novedades esta semana.", ""]
+    if res.get("descartadas"):
+        detalle = ", ".join(f"{f}: {c}" for f, c in sorted(res["descartadas"].items()))
+        l += [f"*Descartadas como ruido (sin relación con tus temas, normas autonómicas, "
+              f"correcciones de errores…): {sum(res['descartadas'].values())} ({detalle}).*", ""]
     if res["errores"]:
         l.append("### ⚠️ Fuentes que han fallado")
         l += [f"- {e}" for e in res["errores"]]
@@ -421,6 +466,7 @@ def main() -> int:
         if n["id"] not in vistos:
             vistos.add(n["id"])
             unicas.append(n)
+    unicas, descartadas = limpiar(unicas)
     orden = list(TEMAS)
     unicas.sort(key=lambda n: (orden.index(n["temas"][0]), n["fuente"], n["fecha"]))
 
@@ -428,7 +474,7 @@ def main() -> int:
         "generado": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "desde": desde.isoformat(), "hasta": hoy.isoformat(),
         "primera_ejecucion": "ultima_ejecucion" not in estado,
-        "temas": TEMAS, "novedades": unicas, "errores": errores,
+        "temas": TEMAS, "novedades": unicas, "descartadas": descartadas, "errores": errores,
     }
     estado["ultima_ejecucion"] = hoy.isoformat()
     OUT.mkdir(exist_ok=True)

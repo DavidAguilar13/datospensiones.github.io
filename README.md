@@ -104,7 +104,7 @@ Solo se publican `index.html`, `sobre.html`, `data/` y `assets/`.
 
 Cada lunes se prepara un borrador de post para Substack y un hilo para X:
 
-1. **Datos y gráficos (código, sin IA)**: `.github/workflows/analista-datos.yml` (lunes 5:00 UTC)
+1. **Datos y gráficos (código, sin IA)**: `.github/workflows/analista-datos.yml` (domingo 13:47 UTC, un día antes de la rutina para absorber los retrasos de GitHub)
    ejecuta `scripts/analista/hallazgos.py`, que calcula las cifras a partir de `data/` y de la
    serie de salarios del INE (ETCL, coste salarial total por trabajador y mes) y genera los
    gráficos con el estilo de David (`scripts/analista/estilo.py`). Resultado en `analisis/`
@@ -118,12 +118,15 @@ Cada lunes se prepara un borrador de post para Substack y un hilo para X:
 Cada domingo, antes del analista, se mira qué han publicado las fuentes oficiales sobre
 pensiones y Seguridad Social, Estado y deuda, demografía, y vivienda y desigualdad:
 
-1. **Detección (código, sin IA)**: `.github/workflows/radar.yml` (domingo 6:00 UTC) ejecuta
+1. **Detección (código, sin IA)**: `.github/workflows/radar.yml` (sábado 13:17 UTC, un día antes de la rutina) ejecuta
    `scripts/radar/radar.py`, que compara con la semana anterior (`radar/estado.json`):
    operaciones del INE, series de Eurostat para España, déficit y deuda de las AAPP del
    Banco de España, disposiciones generales del BOE (filtradas por palabras clave) y
    publicaciones de la AIReF, BBVA Research (España) y CaixaBank Research. Escribe `radar/novedades.json` y abre un issue con la etiqueta
    `radar`. Si una fuente falla, lo dice en el issue y sigue con las demás.
+   Antes quita el ruido (`limpiar()`): publicaciones sin palabra clave de los temas, normas
+   autonómicas, correcciones de errores y fallos de sentencias del BOE solo se cuentan en una
+   línea, y las piezas de un mismo informe (misma fuente, día y tema) se agrupan en una novedad.
 2. **Interpretación (rutina de Claude)**: sigue `RADAR.md`. Comenta el issue (qué importa,
    por qué e ideas de post, sin cifras propias) y, si un dato encaja, abre como mucho un PR
    que lo añade a `scripts/analista/hallazgos.py` con su validación. Nunca fusiona.
