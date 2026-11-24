@@ -74,8 +74,13 @@ Escribe pensando en lo que ya trata en su Substack:
 - **Demografía**: fecundidad, envejecimiento, relación afiliados/pensionistas.
 - Le gustan los **gráficos claros y con fuente**, y desmontar cifras engañosas con datos.
 
-Temas sin datos todavía en `hallazgos.json` (cotizaciones frente a gasto, deuda de la
-Seguridad Social, afiliación): puedes proponerlos en `notas.md`, **sin cifras**.
+El tema `deuda_seguridad_social` (deuda y déficit de la Seguridad Social, del Banco de España)
+responde a «¿se pagan las pensiones con deuda?». Lee bien sus advertencias: la deuda es sobre
+todo préstamos del Estado y el déficit de contabilidad nacional **no** es «lo que no cubren las
+cotizaciones». Si su id aparece en `temas_sin_datos` (el Banco de España falló esa semana), no lo uses.
+
+Temas sin datos todavía en `hallazgos.json` (cotizaciones frente a gasto, afiliación): puedes
+proponerlos en `notas.md`, **sin cifras**.
 
 ## Comprobación final antes de abrir el PR
 

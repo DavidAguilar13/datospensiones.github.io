@@ -52,7 +52,8 @@ Solo si se cumplen **todas** estas condiciones:
   no una norma o un informe.
 - Encaja con un tema que el analista aún no tiene. Prioridad (lo que David pidió):
   1. cotizaciones frente a gasto en pensiones;
-  2. pensiones pagadas con deuda (déficit y deuda de la Seguridad Social, préstamos del Estado);
+  2. pensiones pagadas con deuda: la deuda y el déficit de la Seguridad Social **ya están**
+     (tema `deuda_seguridad_social`, Banco de España); falta lo que no cubren las cotizaciones;
   3. afiliación y relación afiliados/pensionistas;
   4. demografía (fecundidad, envejecimiento), vivienda y desigualdad.
 - No hay ya un PR abierto del radar (rama que empieza por `radar/`).
